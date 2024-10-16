@@ -1,8 +1,7 @@
 # React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+How to manage and work with this repository 
+- Firstly , you have to clone the repository with the command `git clone https://github.com/PeammaeP/skooldio-web-app-project.git` 
+- You have permission to manage with only the `dev` branch , the `dev` branch stands for merge between development between other feature with different branches before merge into `main` branch. Therefore , `dev` branch is onl .`main` branch doesn't allow to manipulate without permission ( production only ).
+- Following develop your feature from Jira , seeking for you ticket and make new branch with you feature and then make the pull request for review and feedback and merge to `dev` branch only !!
+- Finally, Happy Coding ! 
