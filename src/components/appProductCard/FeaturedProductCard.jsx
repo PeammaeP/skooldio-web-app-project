@@ -21,7 +21,7 @@ const FeaturedProductCard = ({
     <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white">
       <div className="relative">
         <img className="w-full" src={imageUrls} alt={name} />
-        {discounted === 100 ? (
+        {discounted !== 100 ? (
           <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-sm font-bold">
             - {discounted}%{" "}
           </div>
