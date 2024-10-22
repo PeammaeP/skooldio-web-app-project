@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 import PropTypes from "prop-types";
+import formatPrice from "../../utils/formatPrice";
 
 const FeaturedProductCard = ({
   name,
@@ -13,26 +14,40 @@ const FeaturedProductCard = ({
   const [discounted, setDiscounted] = useState(price);
 
   useEffect(() => {
-    const discount = Math.ceil((promotionalPrice / price) * 100);
+    const discount = Math.round((promotionalPrice / price) * 100);
     setDiscounted(discount);
   }, [promotionalPrice, price]);
 
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white">
+    <div className="w-[267px] h-[425px] overflow-hidden justify-start bg-white">
       <div className="relative">
-        <img className="w-full" src={imageUrls} alt={name} />
+        <img
+          className="w-[267px] h-[267px] object-cover"
+          src={imageUrls}
+          alt={name}
+        />
         {discounted !== 100 ? (
-          <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-sm font-bold">
+          <div className="absolute w-[66px] h-[34px] top-[24px] right-0 bg-[#FF000D] text-white text-center gap-2 pt-[7px] px-[10px] pb-[7px] text-sm">
             - {discounted}%{" "}
           </div>
         ) : (
           <></>
         )}
       </div>
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{name}</div>
-        <p className="text-gray-700 text-base">{description}</p>
-        <div className="flex items-center mt-2">
+      <div className="mt-4">
+        <div className="font-bold text-xl mb-2 line-clamp-1">{name}</div>
+        <p
+          className=" 
+          text-muted-foreground
+          text-base
+          line-clamp-1
+          mb-2
+          overflow-hidden"
+          title={description}
+        >
+          {description}
+        </p>
+        <div className="flex items-center mt-2 gap-1 py-2 w-[130px] h-[30px]">
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
@@ -42,20 +57,20 @@ const FeaturedProductCard = ({
             />
           ))}
         </div>
-        <div className="mt-4">
+        <div className="flex flex-col mt-4 items-end">
           {promotionalPrice && promotionalPrice < price ? (
-            <>
+            <div className="flex flex-row items-center gap-4">
               <span className="text-gray-500 line-through mr-2">
-                THB {price}
+                {formatPrice(price)}
               </span>
-              <span className="text-red-500 font-bold text-xl">
-                THB {promotionalPrice}
+              <span className="text-[#FF000D] font-bold text-2xl">
+                THB {formatPrice(promotionalPrice)}
               </span>
-            </>
+            </div>
           ) : (
             <>
-              <span className="text-gray-500 font-bold mr-4 text-xl">
-                THB {price}
+              <span className="text-[#080808] font-bold text-2xl justify-items-end">
+                THB {formatPrice(price)}
               </span>
             </>
           )}
