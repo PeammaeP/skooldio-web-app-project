@@ -1,11 +1,11 @@
-import AppProductCard from "./components/appProductCard/AppProductCard";
+// import AppProductCard from "./components/appProductCard/AppProductCard";
+import AppProductDetail from "./components/appProductDetailCard.jsx/AppProductDetail";
 
 function App() {
   return (
     <>
-      <h1 className="text-2xl font-mono text-[#080808] flex flex-row justify-center g-4 p-4">
-      </h1>
-      <AppProductCard />
+      {/* <AppProductCard /> */}
+      <AppProductDetail />
     </>
   );
 }
