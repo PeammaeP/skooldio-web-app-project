@@ -19,7 +19,7 @@ const FeaturedProductCard = ({
   }, [promotionalPrice, price]);
 
   return (
-    <div className="w-[267px] h-[425px] overflow-hidden justify-start bg-white">
+    <div className="w-[267px] h-[425px] overflow-hidden justify-start bg-white hover:-translate-y-2">
       <div className="relative">
         <img
           className="w-[267px] h-[267px] object-cover"
