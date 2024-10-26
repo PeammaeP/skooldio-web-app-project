@@ -25,7 +25,7 @@ const QuantityChangeSelector = ({ maxQuantity }) => {
       <div className="relative">
         <button
           type="button"
-          className="relative w-[224px] h-[54px] bg-white border border-gray-300 pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          className="relative w-[224px] h-[54px] bg-white border border-gray-300 pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-[#C1CD00] focus:border-[#C1CD00] sm:text-sm"
           onClick={() => setIsToggleOpen(!isToggleOpen)}
           aria-haspopup="listbox"
           aria-expanded="true"
@@ -47,7 +47,7 @@ const QuantityChangeSelector = ({ maxQuantity }) => {
             {[...Array(maxQuantity)].map((_, index) => (
               <li
                 key={index}
-                className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white"
+                className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-[#C1CD00] hover:text-white"
                 id={`listbox-option-${index}`}
                 role="option"
                 onClick={() => handleQuantityChange(index + 1)}

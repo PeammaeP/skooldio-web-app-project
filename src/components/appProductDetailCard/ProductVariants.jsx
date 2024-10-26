@@ -124,7 +124,6 @@ const ProductVariants = ({ variants }) => {
 
       {selectedColor && selectedSize && (
         <div>
-          <label className="text-lg font-semibold mb-2 block">Quantity</label>
           <QuantityChangeSelector
             maxQuantity={
               groupedVariants[selectedColor].sizes[selectedSize].remains
