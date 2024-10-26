@@ -14,6 +14,8 @@ import QuantityChangeSelector from "./QuantityChangeSelector";
 //     }
 //   }
 
+const sizeOrder = ["XS", "S", "M", "L", "XL"];
+
 const ProductVariants = ({ variants }) => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
@@ -41,6 +43,13 @@ const ProductVariants = ({ variants }) => {
       return acc;
     }, {});
   }, [variants]);
+
+  // need to use array to sort because the result was array !
+  const sortSizes = (sizes) => {
+    return sizes.sort(
+      ([a], [b]) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b)
+    );
+  };
 
   const handleAddToCart = () => {
     if (selectedColor && selectedSize) {
@@ -89,7 +98,7 @@ const ProductVariants = ({ variants }) => {
         <div>
           <label
             htmlFor="size-select"
-            className="text-lg font-semibold mb-2 block"
+            className="text-[#626262] text-lg font-semibold mb-2 block"
           >
             Size
           </label>
@@ -99,25 +108,25 @@ const ProductVariants = ({ variants }) => {
             role="radiogroup"
             aria-label="Size selection"
           >
-            {Object.entries(groupedVariants[selectedColor].sizes).map(
-              ([size, data]) => (
-                <button
-                  key={size}
-                  className={`relative w-[54px] h-[54px] border ${
-                    selectedSize === size
-                      ? "border-[#C1CD00]"
-                      : "border-gray-300 hover:border-[#C1CD00]"
-                  }`}
-                  onClick={() => handleSizeSelect(size)}
-                  disabled={data.remains === 0}
-                  aria-label={`Size ${size}, ${data.remains} remaining`}
-                  aria-checked={selectedSize === size}
-                  role="radio"
-                >
-                  {size}
-                </button>
-              )
-            )}
+            {sortSizes(
+              Object.entries(groupedVariants[selectedColor].sizes)
+            ).map(([size, data]) => (
+              <button
+                key={size}
+                className={`relative w-[54px] h-[54px] border ${
+                  selectedSize === size
+                    ? "border-[#C1CD00]"
+                    : "border-gray-300 hover:border-[#C1CD00]"
+                }`}
+                onClick={() => handleSizeSelect(size)}
+                disabled={data.remains === 0}
+                aria-label={`Size ${size}, ${data.remains} remaining`}
+                aria-checked={selectedSize === size}
+                role="radio"
+              >
+                {size}
+              </button>
+            ))}
           </div>
         </div>
       )}
