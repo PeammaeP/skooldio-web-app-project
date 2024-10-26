@@ -2,8 +2,7 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 import formatPrice from "../../utils/formatPrice";
-
-const sizes = ["XS", "S", "M", "L", "XL"];
+import QuantityChangeSelector from "./QuantityChangeSelector";
 
 const ProductDetailCard = ({
   id,
@@ -20,7 +19,8 @@ const ProductDetailCard = ({
   variants,
 }) => {
   const [selectedImage, setSelectedImage] = useState(imageUrls[0]);
-  const [selectedSize, setSelectedSize] = useState(sizes[0]);
+  // const [selectedSize, setSelectedSize] = useState(sizes[0]);
+  const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
 
   const [discounted, setDiscounted] = useState(price);
@@ -35,8 +35,8 @@ const ProductDetailCard = ({
       {/* First Col */}
       <div className="relative flex flex-col">
         {/* Main Image */}
-        <div className="w-full max-w-lg h-auto">
-          <img src={selectedImage} alt={name} />
+        <div className="relative w-full max-w-lg h-auto">
+          <img src={selectedImage} alt={name} className="w-full h-auto" />
           {discounted !== 100 ? (
             <div className="absolute w-[66px] h-[34px] top-[24px] right-0 bg-[#FF000D] text-white text-center gap-2 pt-[7px] px-[10px] pb-[7px] text-sm">
               - {discounted}%{" "}
@@ -71,11 +71,22 @@ const ProductDetailCard = ({
         <div className="flex flex-col mt-4">
           {promotionalPrice && promotionalPrice < price ? (
             <>
-              <div className="text-gray-600 text-sm">
-                From THB {formatPrice(price)}
+              <div
+                className="bg-[#FF000D] text-white text-4xl font-bold mr-2.5 mb-2 flex items-center justify-center"
+                style={{
+                  padding: "8px 10px",
+                  gap: "10px",
+                  width: "fit-content",
+                  height: "fit-content",
+                  opacity: 1, // opacity 0 hides it, so set to 1 for visible
+                }}
+              >
+                <span>THB</span>
+                <span>{formatPrice(promotionalPrice)}</span>
               </div>
-              <div className="text-red-600 text-4xl font-bold mt-2">
-                THB {formatPrice(promotionalPrice)}
+              <div className="relative text-[#222222] text-lg">
+                <span>From </span>
+                <span className="line-through">THB {formatPrice(price)}</span>
               </div>
             </>
           ) : (
@@ -136,35 +147,31 @@ const ProductDetailCard = ({
                     Size
                   </h2>
                   <div className="flex flex-row items-start justify-start space-x-3">
-                    {sizes.map((size) => (
-                      <button
-                        key={size}
-                        className={`w-[106px] h-[54px] border text-lg font-medium transition-colors 
+                    <button
+                      key={variant.size}
+                      className={`w-[106px] h-[54px] border text-lg font-medium transition-colors 
                           ${
-                            selectedSize === size
+                            selectedSize === variant.size
                               ? "border-[#C1CD00]"
                               : "border-gray-300 text-gray-700 hover:border-[#C1CD00]"
                           }`}
-                        onClick={() => setSelectedSize(size)}
-                      >
-                        {size}
-                      </button>
-                    ))}
+                      onClick={() => setSelectedSize(variant.size)}
+                    >
+                      {variant.size}
+                    </button>
                   </div>
                 </div>
-                {/* Drop Down Quantity */}
-                <div className="w-full max-w-[200px] gap-4">
-                  <h2 className="font-semibold mb-4 text-[#626262] text-lg">
-                    Qty.
-                  </h2>
+                {/* Drop Down Quantity  => Using QuantityChangeSelector */}
+                <div className="w-full max-w-[200px] gap-4 mt-4">
+                  <QuantityChangeSelector maxQuantity={variant.remains}/>
                 </div>
                 {/* Add to Cart Button */}
-                <div className="flex flex-col justify-center items-center bg-[#222222] text-white h-[54px] w-full">
-                  Add to Cart
-                </div>
               </div>
             );
           })}
+          <button className="flex flex-col justify-center items-center mt-4 bg-[#222222] text-white h-[54px] w-full hover:bg-[#222333]">
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>
