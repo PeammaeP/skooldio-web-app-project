@@ -2,12 +2,15 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-const QuantityChangeSelector = (maxQuantity) => {
+const QuantityChangeSelector = ({ maxQuantity }) => {
   const [quantity, setQuantity] = useState(1);
   const [isToggleOpen, setIsToggleOpen] = useState(false);
 
   const handleQuantityChange = (newQuantity) => {
-    setQuantity(newQuantity);
+    if (newQuantity >= 1 && newQuantity <= maxQuantity) {
+      setQuantity(newQuantity);
+    }
+
     setIsToggleOpen(false);
   };
 
@@ -41,7 +44,7 @@ const QuantityChangeSelector = (maxQuantity) => {
             aria-labelledby="listbox-label"
             aria-activedescendant="listbox-option-0"
           >
-            {[...Array(maxQuantity.maxQuantity)].map((_, index) => (
+            {[...Array(maxQuantity)].map((_, index) => (
               <li
                 key={index}
                 className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-indigo-600 hover:text-white"

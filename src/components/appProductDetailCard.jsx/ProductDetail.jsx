@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 import formatPrice from "../../utils/formatPrice";
-import QuantityChangeSelector from "./QuantityChangeSelector";
+import ProductVariants from "./ProductVariants";
 
 const ProductDetailCard = ({
   id,
@@ -19,9 +19,6 @@ const ProductDetailCard = ({
   variants,
 }) => {
   const [selectedImage, setSelectedImage] = useState(imageUrls[0]);
-  // const [selectedSize, setSelectedSize] = useState(sizes[0]);
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
 
   const [discounted, setDiscounted] = useState(price);
 
@@ -106,73 +103,7 @@ const ProductDetailCard = ({
             />
           ))}
         </div>
-        {/* Variants */}
-        <div className="space-y-4">
-          {variants.map((variant) => {
-            return (
-              <div key={variant.skuCode} className="flex flex-col">
-                <h2 className="flex flex-col justify-start items-start font-semibold mb-4 text-[#626262] text-lg">
-                  Color
-                </h2>
-                {/* Color */}
-                <div className="flex flex-col items-start">
-                  <button
-                    key={variant.skuCode}
-                    className={`relative w-[54px] h-[54px] border ${
-                      selectedColor === variant.color
-                        ? "border-[#C1CD00]"
-                        : "border-gray-300 hover:border-[#C1CD00]"
-                    }`}
-                    onClick={() => {
-                      setSelectedColor(variant.color);
-                    }}
-                  >
-                    <div className="absolute inset-0 grid grid-cols-6 grid-rows-6">
-                      {[...Array(36)].map((_, index) => (
-                        <div
-                          key={index}
-                          className={`border border-white `}
-                          style={{ backgroundColor: variant.colorCode }}
-                        ></div>
-                      ))}
-                    </div>
-                  </button>
-                  <span className="text-sm mt-2 text-gray-600">
-                    {variant.color}
-                  </span>
-                </div>
-                {/* Size */}
-                <div className="gap-4">
-                  <h2 className="font-semibold mb-4 text-[#626262] text-lg">
-                    Size
-                  </h2>
-                  <div className="flex flex-row items-start justify-start space-x-3">
-                    <button
-                      key={variant.size}
-                      className={`w-[106px] h-[54px] border text-lg font-medium transition-colors 
-                          ${
-                            selectedSize === variant.size
-                              ? "border-[#C1CD00]"
-                              : "border-gray-300 text-gray-700 hover:border-[#C1CD00]"
-                          }`}
-                      onClick={() => setSelectedSize(variant.size)}
-                    >
-                      {variant.size}
-                    </button>
-                  </div>
-                </div>
-                {/* Drop Down Quantity  => Using QuantityChangeSelector */}
-                <div className="w-full max-w-[200px] gap-4 mt-4">
-                  <QuantityChangeSelector maxQuantity={variant.remains}/>
-                </div>
-                {/* Add to Cart Button */}
-              </div>
-            );
-          })}
-          <button className="flex flex-col justify-center items-center mt-4 bg-[#222222] text-white h-[54px] w-full hover:bg-[#222333]">
-            Add to Cart
-          </button>
-        </div>
+        <ProductVariants variants={variants} />
       </div>
     </div>
   );
