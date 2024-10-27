@@ -87,6 +87,7 @@ FeaturedProductCard.propTypes = {
   description: PropTypes.string.isRequired,
   ratings: PropTypes.number.isRequired,
   imageUrls: PropTypes.string.isRequired,
+  collection: PropTypes.string,
 };
 
 export default FeaturedProductCard;
