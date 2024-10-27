@@ -110,16 +110,6 @@ const ProductDetailCard = ({
           </div>
           <ProductVariants variants={variants} />
         </div>
-        {/* <section className="mt-12">
-          <div className="mb-8">
-            <h2 className="text-3xl md:text-3xl font-bold text-[#222222]">
-              People Also Like These
-            </h2>
-          </div>
-          <div className="bg-white overflow-hidden p-4">
-            <ProductCardIntersection collection={collection} />
-          </div>
-        </section> */}
       </div>
       <section className="mt-12 max-w-7xl mx-20">
         <div className="mb-8">
@@ -128,7 +118,10 @@ const ProductDetailCard = ({
           </h2>
         </div>
         <div className="bg-white overflow-hidden">
-          <ProductCardIntersection collection={collection} />
+          <ProductCardIntersection
+            collection={collection}
+            currentProductId={id}
+          />
         </div>
       </section>
     </div>

@@ -4,12 +4,15 @@ import fetchAPI from "../../utils/fetchAPI";
 import FeaturedProductCard from "../appProductCard/FeaturedProductCard";
 import PropTypes from "prop-types";
 
-const ProductCardIntersection = ({ collection }) => {
+const ProductCardIntersection = ({ collection, currentProductId }) => {
   const [productDisplay, setProductDisplay] = useState([]);
 
-  const filterValueCollection = (products, collection) => {
+  const filterValueCollection = (products, collection, currentProductId) => {
     if (collection === "") return products;
-    return products.filter((product) => product.collection === collection);
+    return products.filter(
+      (product) =>
+        product.collection === collection && product.id !== currentProductId
+    );
   };
 
   useEffect(() => {
@@ -25,14 +28,18 @@ const ProductCardIntersection = ({ collection }) => {
     };
     const loadingTimeOut = setTimeout(() => {
       fetchDataProduct(allProductAPI);
-    }, 1000);
+    }, 100);
     return () => clearTimeout(loadingTimeOut);
   }, []);
 
   return (
     <div className="container mx-auto">
       <div className="grid grid-cols-4 sm:grid-cols-1 gap-10">
-        {filterValueCollection(productDisplay, collection).map((value) => (
+        {filterValueCollection(
+          productDisplay,
+          collection,
+          currentProductId
+        ).map((value) => (
           <FeaturedProductCard
             key={value.id}
             name={value.name}
@@ -50,6 +57,7 @@ const ProductCardIntersection = ({ collection }) => {
 
 ProductCardIntersection.propTypes = {
   collection: PropTypes.string.isRequired,
+  currentProductId: PropTypes.string.isRequired,
 };
 
 export default ProductCardIntersection;
