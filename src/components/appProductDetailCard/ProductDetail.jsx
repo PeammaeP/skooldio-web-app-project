@@ -4,6 +4,7 @@ import { Star } from "lucide-react";
 import formatPrice from "../../utils/formatPrice";
 import ProductVariants from "./ProductVariants";
 import ProductCardIntersection from "./ProductCardIntersection";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const ProductDetailCard = ({
   id,
@@ -20,6 +21,22 @@ const ProductDetailCard = ({
   variants,
 }) => {
   const [selectedImage, setSelectedImage] = useState(imageUrls[0]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleImageChange = (image, index) => {
+    setSelectedImage(image);
+    setCurrentIndex(index);
+  };
+
+  const handleNext = () => {
+    const nextIndex = (currentIndex + 1) % imageUrls.length;
+    handleImageChange(imageUrls[nextIndex], nextIndex);
+  };
+
+  const handlePrev = () => {
+    const prevIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
+    handleImageChange(imageUrls[prevIndex], prevIndex);
+  };
 
   const [discounted, setDiscounted] = useState(price);
 
@@ -36,6 +53,22 @@ const ProductDetailCard = ({
           {/* Main Image */}
           <div className="relative w-full max-w-lg h-auto">
             <img src={selectedImage} alt={name} className="w-full h-auto" />
+            {/* Navigation Buttons */}
+            <button
+              onClick={handlePrev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md opacity-30 transition-opacity"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={handleNext}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md opacity-30 transition-opacity"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
             {discounted !== 100 ? (
               <div className="absolute w-[66px] h-[34px] top-[24px] right-0 bg-[#FF000D] text-white text-center gap-2 pt-[7px] px-[10px] pb-[7px] text-sm">
                 - {discounted}%{" "}
@@ -44,19 +77,21 @@ const ProductDetailCard = ({
               <></>
             )}
           </div>
+
           {/* Sub-Image */}
           <div className="flex flex-row gap-2 mt-4">
             {imageUrls.map((image, index) => (
-              <div
+              <button
                 key={index}
                 className="w-24 h-24 overflow-hidden bg-gray-100"
+                onClick={() => handleImageChange(image, index)}
               >
                 <img
                   src={image}
                   alt={`${name} view ${index + 1}`}
                   className="w-full h-full object-cover"
                 />
-              </div>
+              </button>
             ))}
           </div>
           {/* end sub-image */}
