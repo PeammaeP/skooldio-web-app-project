@@ -19,10 +19,10 @@ const FeaturedProductCard = ({
   }, [promotionalPrice, price]);
 
   return (
-    <div className="mt-6 dtdf:w-[370px] dtdf:h-[524px] dtcs:w-[267px] dtcs:h-[425px] overflow-hidden justify-start bg-white hover:-translate-y-2">
+    <div className="mt-6 sm:w-[343px] sm:h-[524px] dtdf:w-[370px] dtdf:h-[524px] dtcs:w-[267px] dtcs:h-[425px] overflow-hidden justify-start bg-white hover:-translate-y-2">
       <div className="relative">
         <img
-          className="dtdf:w-[370px] dtdf:h-[370px] dtcs:w-[267px] dtcs:h-[267px] object-cover"
+          className="sm:w-[343px] sm:h-[370px] dtdf:w-[370px] dtdf:h-[370px] dtcs:w-[267px] dtcs:h-[267px] object-cover"
           src={imageUrls}
           alt={name}
         />
