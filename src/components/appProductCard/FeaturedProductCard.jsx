@@ -14,7 +14,7 @@ const FeaturedProductCard = ({
   const [discounted, setDiscounted] = useState(price);
 
   useEffect(() => {
-    const discount = Math.round((promotionalPrice / price) * 100);
+    const discount = Math.round(100 - (promotionalPrice / price) * 100);
     setDiscounted(discount);
   }, [promotionalPrice, price]);
 
