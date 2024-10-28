@@ -1,7 +1,7 @@
 import React from "react";
 import FeaturedProductCard from "./FeaturedProductCard";
 import fetchAPI from "../../utils/fetchAPI";
-import allProductAPI from "../../data/allProductAPI";
+import firstPageProductAPI from "../../data/allProductAPI";
 
 const AppProductCard = () => {
   const [productDisplay, setProductDisplay] = React.useState([]);
@@ -18,13 +18,13 @@ const AppProductCard = () => {
       }
     };
     const loadingTimeOut = setTimeout(() => {
-      fetchDataProduct(allProductAPI);
+      fetchDataProduct(firstPageProductAPI);
     }, 50);
     return () => clearTimeout(loadingTimeOut);
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 p-12 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-10 p-6">
       {productDisplay.map((value) => (
         <FeaturedProductCard
           key={value.id}

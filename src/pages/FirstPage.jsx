@@ -8,11 +8,11 @@ const FirstPage = () => {
         <CollectionCard />
       </section>
 
-      <section className="mt-auto">
-        <h2 className="text-3xl font-bold mb-4 text-center">
+      <section className="flex flex-col justify-center items-center flex-1">
+        <h2 className="text-3xl font-bold mb-4 mt-16 text-center">
           Featured Product
         </h2>
-        <div className="gap-6 p-6">
+        <div className="mt-6 gap-6 p-6">
           <AppProductCard />
         </div>
       </section>
