@@ -28,13 +28,13 @@ const ProductCardIntersection = ({ collection, currentProductId }) => {
     };
     const loadingTimeOut = setTimeout(() => {
       fetchDataProduct(allProductAPI);
-    }, 100);
+    }, 10);
     return () => clearTimeout(loadingTimeOut);
   }, []);
 
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-4 sm:grid-cols-1 gap-10">
+      <div className="grid grid-cols-4 sm:grid-cols-1 gap-10 mt-16">
         {filterValueCollection(
           productDisplay,
           collection,

@@ -21,7 +21,7 @@ const AppProductDetail = () => {
 
     const loadingTimeOut = setTimeout(() => {
       functionGetProductDetail(TestProductDetailAPI);
-    }, 1000);
+    }, 10);
 
     return () => clearTimeout(loadingTimeOut);
   }, []);

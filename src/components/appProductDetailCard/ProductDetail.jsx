@@ -41,7 +41,7 @@ const ProductDetailCard = ({
   const [discounted, setDiscounted] = useState(price);
 
   useEffect(() => {
-    const discount = Math.round((promotionalPrice / price) * 100);
+    const discount = Math.round(100 - (promotionalPrice / price) * 100);
     setDiscounted(discount);
   }, [promotionalPrice, price]);
 
@@ -147,11 +147,9 @@ const ProductDetailCard = ({
         </div>
       </div>
       <section className="flex flex-col items-start mt-12 max-w-7xl mx-auto p-4 mb-auto">
-        <div className="mb-8">
-          <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
-            People Also Like These
-          </h2>
-        </div>
+        <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
+          People Also Like These
+        </h2>
         <div className="bg-white overflow-hidden">
           <ProductCardIntersection
             collection={collection}
