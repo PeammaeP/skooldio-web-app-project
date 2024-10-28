@@ -111,9 +111,9 @@ const ProductDetailCard = ({
           <ProductVariants variants={variants} />
         </div>
       </div>
-      <section className="mt-12 max-w-7xl mx-20">
+      <section className="flex flex-col items-start mt-12 max-w-7xl mx-auto p-4 mb-auto">
         <div className="mb-8">
-          <h2 className="text-3xl md:text-3xl font-bold text-[#222222]">
+          <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
             People Also Like These
           </h2>
         </div>
