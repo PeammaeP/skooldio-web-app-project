@@ -1,6 +1,6 @@
 const CollectionCard = () => {
   return (
-    <div className="dtcs:h-[462px] dtdf:h-[500px] w-full flex flex-col dtcs:flex-row gap-[20px] dtcs:gap-[40px] items-center  justify-center absolute top-[254px] dtcs:top-[577px] ">
+    <div className="dtcs:h-[462px] dtdf:h-[500px] w-full flex flex-col dtcs:flex-row gap-[20px] dtcs:gap-[40px] items-center  justify-center top-[254px] dtcs:top-[577px] ">
       {/* Season 2024 Card */}
       <div className="flex flex-col w-[343px] dtcs:w-[363px] h-[442px] dtcs:h-[462px] dtdf:h-[458px] gap-[20px] dtcs:gap-[24px] mb-[4px] ">
         <div className="flex flex-col w-[209px] h-[142px] dtcs:w-[251px] dtcs:h-[178px]">
