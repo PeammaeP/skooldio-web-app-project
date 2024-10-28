@@ -24,7 +24,7 @@ const AppProductCard = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 p-6 justify-center">
+    <div className="grid grid-cols-4 p-12 gap-6 justify-start items-start">
       {productDisplay.map((value) => (
         <FeaturedProductCard
           key={value.id}

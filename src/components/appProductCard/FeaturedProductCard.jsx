@@ -26,7 +26,7 @@ const FeaturedProductCard = ({
           src={imageUrls}
           alt={name}
         />
-        {discounted !== 100 ? (
+        {discounted !== 100 && discounted !== 0 ? (
           <div className="absolute w-[66px] h-[34px] top-[24px] right-0 bg-[#FF000D] text-white text-center gap-2 pt-[7px] px-[10px] pb-[7px] text-sm">
             - {discounted}%{" "}
           </div>
