@@ -47,7 +47,7 @@ const ProductDetailCard = ({
 
   return (
     <div className="mx-auto px-4">
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 mt-6 gap-6 p-4 mx-auto max-w-7xl dtdf:max-w-screen-2xl">
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 mt-6 gap-6 mx-auto max-w-7xl dtdf:max-w-screen-2xl">
         {/* First Col */}
         <div className="relative flex flex-col">
           {/* Main Image */}
@@ -145,7 +145,7 @@ const ProductDetailCard = ({
           <ProductVariants variants={variants} />
         </div>
       </div>
-      <section className="relative flex flex-col items-start mt-12 dtdf:max-w-screen-2xl md:max-w-7xl mx-auto mb-auto">
+      <section className="relative flex flex-col items-start mt-36 dtdf:max-w-screen-2xl md:max-w-7xl mx-auto mb-auto">
         <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
           People Also Like These
         </h2>
