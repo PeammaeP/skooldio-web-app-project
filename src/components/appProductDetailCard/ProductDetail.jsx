@@ -47,7 +47,7 @@ const ProductDetailCard = ({
 
   return (
     <div className="mx-auto px-4">
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 mt-6 gap-6 mx-auto max-w-7xl dtdf:max-w-screen-2xl">
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 mt-6 gap-6 mx-auto md:max-w-7xl dtdf:max-w-screen-2xl">
         {/* First Col */}
         <div className="relative flex flex-col">
           {/* Main Image */}
@@ -61,6 +61,7 @@ const ProductDetailCard = ({
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
+            {/* w-[66px] h-[34px] top-[24px] */}
 
             <button
               onClick={handleNext}
@@ -70,7 +71,7 @@ const ProductDetailCard = ({
               <ChevronRight className="w-6 h-6" />
             </button>
             {discounted !== 100 && discounted !== 0 ? (
-              <div className="absolute w-[66px] h-[34px] top-[24px] right-0 bg-[#FF000D] text-white text-center gap-2 pt-[7px] px-[10px] pb-[7px] text-sm">
+              <div className="absolute w-full max-w-24 h-full max-h-12 top-8 right-0 bg-[#FF000D] text-white text-center text-xl gap-2 pt-[7px] px-[10px] pb-[7px] ">
                 - {discounted}%{" "}
               </div>
             ) : (
