@@ -2,18 +2,6 @@ import { useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import QuantityChangeSelector from "./QuantityChangeSelector";
 
-// type GroupedVariants = {
-//     [color: string]: {
-//       colorCode: string
-//       sizes: {
-//         [size: string]: {
-//           skuCode: string
-//           remains: number
-//         }
-//       }
-//     }
-//   }
-
 const sizeOrder = ["XS", "S", "M", "L", "XL"];
 
 const ProductVariants = ({ variants }) => {

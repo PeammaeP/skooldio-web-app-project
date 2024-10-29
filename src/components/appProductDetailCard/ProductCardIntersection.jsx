@@ -3,6 +3,7 @@ import allProductAPI from "../../data/allProductAPI";
 import fetchAPI from "../../utils/fetchAPI";
 import FeaturedProductCard from "../appProductCard/FeaturedProductCard";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const ProductCardIntersection = ({ collection, currentProductId }) => {
   const [productDisplay, setProductDisplay] = useState([]);
@@ -33,24 +34,26 @@ const ProductCardIntersection = ({ collection, currentProductId }) => {
   }, []);
 
   return (
-    <div className="container mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mt-16">
-        {filterValueCollection(
-          productDisplay,
-          collection,
-          currentProductId
-        ).map((value) => (
-          <FeaturedProductCard
-            key={value.id}
-            name={value.name}
-            price={value.price}
-            promotionalPrice={value.promotionalPrice}
-            description={value.description}
-            ratings={value.ratings}
-            imageUrls={value.imageUrls[0]}
-          />
-        ))}
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-16">
+      {filterValueCollection(productDisplay, collection, currentProductId).map(
+        (product) => (
+          <Link
+            key={product.id}
+            to={`/products/${product.permalink}`}
+            className="block transform hover:scale-[1.02] transition-transform duration-300"
+          >
+            <FeaturedProductCard
+              key={product.id}
+              name={product.name}
+              price={product.price}
+              promotionalPrice={product.promotionalPrice}
+              description={product.description}
+              ratings={product.ratings}
+              imageUrls={product.imageUrls[0]}
+            />
+          </Link>
+        )
+      )}
     </div>
   );
 };
