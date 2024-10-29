@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./css/index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import FirstPage from "./pages/FirstPage.jsx";
-// import App from "./App.jsx";
+import AppProductDetail from "./components/appProductDetailCard/AppProductDetail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +11,8 @@ const router = createBrowserRouter([
     element: <FirstPage />,
   },
   {
-    path: "",
+    path: "/products/:permalink",
+    element: <AppProductDetail />,
   },
 ]);
 
