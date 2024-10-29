@@ -46,12 +46,12 @@ const ProductDetailCard = ({
   }, [promotionalPrice, price]);
 
   return (
-    <div className="container mx-auto px-4">
-      <div className="grid grid-cols-2 mt-6 gap-6 p-4 mx-auto max-w-7xl">
+    <div className="mx-auto px-4">
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 mt-6 gap-6 p-4 mx-auto max-w-7xl dtdf:max-w-screen-2xl">
         {/* First Col */}
         <div className="relative flex flex-col">
           {/* Main Image */}
-          <div className="relative w-full max-w-lg h-auto">
+          <div className="relative w-full max-w-7xl h-auto">
             <img src={selectedImage} alt={name} className="w-full h-auto" />
             {/* Navigation Buttons */}
             <button
@@ -77,13 +77,12 @@ const ProductDetailCard = ({
               <></>
             )}
           </div>
-
           {/* Sub-Image */}
-          <div className="flex flex-row gap-2 mt-4">
+          <div className="flex flex-row justify-between items-center gap-2 mt-4">
             {imageUrls.map((image, index) => (
               <button
                 key={index}
-                className="w-24 h-24 overflow-hidden bg-gray-100"
+                className="h-auto w-full max-w-48 overflow-hidden bg-gray-100"
                 onClick={() => handleImageChange(image, index)}
               >
                 <img
@@ -146,11 +145,11 @@ const ProductDetailCard = ({
           <ProductVariants variants={variants} />
         </div>
       </div>
-      <section className="flex flex-col items-start mt-12 max-w-7xl mx-auto p-4 mb-auto">
+      <section className="relative flex flex-col items-start mt-12 dtdf:max-w-screen-2xl md:max-w-7xl mx-auto mb-auto">
         <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
           People Also Like These
         </h2>
-        <div className="bg-white overflow-hidden">
+        <div className="bg-white overflow-hidden max-7xl">
           <ProductCardIntersection
             collection={collection}
             currentProductId={id}
