@@ -2,15 +2,15 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-const QuantityChangeSelector = ({ maxQuantity }) => {
+const QuantityChangeSelector = ({ maxQuantity, onChange }) => {
   const [quantity, setQuantity] = useState(1);
   const [isToggleOpen, setIsToggleOpen] = useState(false);
 
   const handleQuantityChange = (newQuantity) => {
     if (newQuantity >= 1 && newQuantity <= maxQuantity) {
       setQuantity(newQuantity);
+      onChange(newQuantity);
     }
-
     setIsToggleOpen(false);
   };
 
@@ -64,6 +64,7 @@ const QuantityChangeSelector = ({ maxQuantity }) => {
 
 QuantityChangeSelector.propTypes = {
   maxQuantity: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default QuantityChangeSelector;

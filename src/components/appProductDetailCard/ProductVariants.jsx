@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import QuantityChangeSelector from "./QuantityChangeSelector";
 
@@ -7,6 +7,8 @@ const sizeOrder = ["XS", "S", "M", "L", "XL"];
 const ProductVariants = ({ variants }) => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
+  const [hasSize, setHasSize] = useState(null);
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
@@ -17,35 +19,53 @@ const ProductVariants = ({ variants }) => {
     setSelectedSize(size);
   };
 
+  const handleQuantityChange = (quantity) => {
+    setSelectedQuantity(quantity);
+  };
+
   // restructure the variants of the API
   const groupedVariants = useMemo(() => {
     return variants.reduce((acc, variant) => {
-      // base case -> create the acc each of variant.color index
       if (!acc[variant.color]) {
         acc[variant.color] = { colorCode: variant.colorCode, sizes: {} };
       }
-      acc[variant.color].sizes[variant.size] = {
-        skuCode: variant.skuCode,
-        remains: variant.remains,
-      };
+      if (!variant.size) {
+        acc[variant.color].skuCode = variant.skuCode;
+        acc[variant.color].remains = variant.remains;
+      } else {
+        acc[variant.color].sizes[variant.size] = {
+          skuCode: variant.skuCode,
+          remains: variant.remains,
+        };
+      }
       return acc;
     }, {});
+  }, [variants]);
+
+  // Set `hasSize` based on whether any variant includes sizes
+  useEffect(() => {
+    const hasAnySize = variants.some((variant) => variant.size);
+    setHasSize(hasAnySize);
   }, [variants]);
 
   // need to use array to sort because the result was array !
   const sortSizes = (sizes) => {
     if (sizes) {
-      return sizes.sort(
-        ([a], [b]) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b)
-      );
+      return sizes
+        .filter(([size]) => size) // filter out falsy values
+        .sort(([a], [b]) => sizeOrder.indexOf(a) - sizeOrder.indexOf(b));
     }
+    return [];
   };
 
   const handleAddToCart = () => {
-    if (selectedColor && selectedSize) {
-      const selectedVariant =
-        groupedVariants[selectedColor].sizes[selectedSize];
-      console.log(`Added to cart: ${selectedVariant.skuCode}`);
+    if (selectedColor && (selectedSize || !hasSize)) {
+      const selectedVariant = hasSize
+        ? groupedVariants[selectedColor].sizes[selectedSize]
+        : groupedVariants[selectedColor];
+      console.log(
+        `Added to cart: ${selectedVariant.skuCode} , Quantity ${selectedQuantity}`
+      );
     }
   };
 
@@ -84,7 +104,7 @@ const ProductVariants = ({ variants }) => {
           </div>
         ))}
       </div>
-      {selectedColor && (
+      {selectedColor && hasSize && (
         <div>
           <label
             htmlFor="size-select"
@@ -100,42 +120,43 @@ const ProductVariants = ({ variants }) => {
           >
             {sortSizes(
               Object.entries(groupedVariants[selectedColor].sizes)
-            ).map(([size, data]) =>
-              size !== undefined ? (
-                <button
-                  key={size}
-                  className={`relative w-[54px] h-[54px] border ${
-                    selectedSize === size
-                      ? "border-[#C1CD00]"
-                      : "border-gray-300 hover:border-[#C1CD00]"
-                  }`}
-                  onClick={() => handleSizeSelect(size)}
-                  disabled={data.remains === 0}
-                  aria-label={`Size ${size}, ${data.remains} remaining`}
-                  aria-checked={selectedSize === size}
-                  role="radio"
-                >
-                  {size}
-                </button>
-              ) : null
-            )}
+            ).map(([size, data]) => (
+              <button
+                key={size}
+                className={`relative w-[54px] h-[54px] border ${
+                  selectedSize === size
+                    ? "border-[#C1CD00]"
+                    : "border-gray-300 hover:border-[#C1CD00]"
+                }`}
+                onClick={() => handleSizeSelect(size)}
+                disabled={data.remains === 0}
+                aria-label={`Size ${size}, ${data.remains} remaining`}
+                aria-checked={selectedSize === size}
+                role="radio"
+              >
+                {size}
+              </button>
+            ))}
           </div>
         </div>
       )}
 
-      {selectedColor && selectedSize && (
+      {selectedColor && (hasSize ? selectedSize : true) && (
         <div>
           <QuantityChangeSelector
             maxQuantity={
-              groupedVariants[selectedColor].sizes[selectedSize].remains
+              hasSize
+                ? groupedVariants[selectedColor].sizes[selectedSize].remains
+                : groupedVariants[selectedColor].remains
             }
+            onChange={handleQuantityChange} // Pass the callback
           />
         </div>
       )}
       <button
         className="flex flex-col justify-center items-center mt-4 bg-[#222222] text-white h-[54px] w-full hover:bg-[#222333]"
-        onClick={() => handleAddToCart()}
-        disabled={!selectedColor || !selectedSize}
+        onClick={handleAddToCart}
+        disabled={!selectedColor || (!selectedSize && hasSize)}
       >
         Add to Cart
       </button>
