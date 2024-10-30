@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const CartCard = () => {
   return (
-    <div className="bg-[#fafafa]">
+    <div>
       <div className="w-[125px] h-[48px] mt-[41px] mb-[34px] relative left-[16px] dtcs:left-[124px] dtdf:left-[184px]">
         <h2 className="font-Poppins not-italic font-[700] text-[32px] text-[#222222]">
           My cart
