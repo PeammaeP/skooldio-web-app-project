@@ -1,14 +1,17 @@
 import { useMemo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import QuantityChangeSelector from "./QuantityChangeSelector";
+import CartNotificationCard from "./CartNotificationCard";
 
 const sizeOrder = ["XS", "S", "M", "L", "XL"];
 
-const ProductVariants = ({ variants }) => {
+const ProductVariants = ({ variants, name, imageUrls, price }) => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [hasSize, setHasSize] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
+  const [showCartNotification, setShowCartNotification] = useState(false);
+  const [productSkuCode, setProductSkuCode] = useState("");
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
@@ -66,6 +69,8 @@ const ProductVariants = ({ variants }) => {
       console.log(
         `Added to cart: ${selectedVariant.skuCode} , Quantity ${selectedQuantity}`
       );
+      setShowCartNotification(true);
+      setProductSkuCode(selectedVariant.skuCode);
     }
   };
 
@@ -124,9 +129,11 @@ const ProductVariants = ({ variants }) => {
               <button
                 key={size}
                 className={`relative w-[54px] h-[54px] border ${
-                  selectedSize === size
-                    ? "border-[#C1CD00]"
-                    : "border-gray-300 hover:border-[#C1CD00]"
+                  data.remains === 0
+                    ? "border-gray-300 bg-gray-200 text-gray-400 cursor-not-allowed" // Disabled style
+                    : selectedSize === size
+                    ? "border-[#C1CD00]" // Selected style
+                    : "border-gray-300 hover:border-[#C1CD00]" // Default style
                 }`}
                 onClick={() => handleSizeSelect(size)}
                 disabled={data.remains === 0}
@@ -160,6 +167,17 @@ const ProductVariants = ({ variants }) => {
       >
         Add to Cart
       </button>
+      {showCartNotification && (
+        <CartNotificationCard
+          isOpen={showCartNotification}
+          onClose={() => setShowCartNotification()}
+          name={name}
+          imageUrls={imageUrls}
+          quantity={selectedQuantity}
+          skuCode={productSkuCode}
+          price={price}
+        />
+      )}
     </div>
   );
 };
@@ -174,6 +192,9 @@ ProductVariants.propTypes = {
       colorCode: PropTypes.string.isRequired,
     })
   ).isRequired,
+  name: PropTypes.string.isRequired,
+  imageUrls: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  price: PropTypes.number.isRequired,
 };
 
 export default ProductVariants;
