@@ -19,12 +19,10 @@ const CartNotificationCard = ({
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm z-50 flex items-start justify-center">
-      <Card className="w-full max-w-[70%] h-auto max-h-[90vh] mt-20 border rounded-lg overflow-hidden sm:max-w-[40px] sm:max-h-[40px] lg:max-w-[900px] lg:max-h-[500px]">
+      <Card className="w-full max-w-[70%] h-auto max-h-[90vh] mt-20 border rounded-lg overflow-hidden lg:max-w-[900px] lg:max-h-[500px]">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b sm:py-6 lg:py-4 lg:flex-row">
-          <h2 className="text-lg font-bold sm:text-xl">
-            Items added to your cart
-          </h2>
+          <h2 className="text-lg font-bold">Items added to your cart</h2>
           <Button
             variant="ghost"
             size="icon"
