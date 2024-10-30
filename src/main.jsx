@@ -4,6 +4,7 @@ import "./css/index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import FirstPage from "./pages/FirstPage.jsx";
 import AppProductDetail from "./components/appProductDetailCard/AppProductDetail.jsx";
+import CartPage from "./pages/CartPage";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: "/products/:permalink",
     element: <AppProductDetail />,
+  },
+  {
+    path: "/carts",
+    element: <CartPage />,
   },
 ]);
 
