@@ -19,9 +19,12 @@ const CartNotificationCard = ({
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm z-50 flex items-start justify-center">
-      <Card className="w-full max-w-[900px] h-full max-h-[374px] mt-20 border rounded-lg overflow-hidden">
-        <div className="flex items-center justify-between p-4 border-b">
-          <h2 className="text-xl font-bold">Items added to your cart</h2>
+      <Card className="w-full max-w-[70%] h-auto max-h-[90vh] mt-20 border rounded-lg overflow-hidden sm:max-w-[40px] sm:max-h-[40px] lg:max-w-[900px] lg:max-h-[500px]">
+        {/* Header */}
+        <div className="flex items-center justify-between p-4 border-b sm:py-6 lg:py-4 lg:flex-row">
+          <h2 className="text-lg font-bold sm:text-xl">
+            Items added to your cart
+          </h2>
           <Button
             variant="ghost"
             size="icon"
@@ -32,9 +35,11 @@ const CartNotificationCard = ({
             <span className="sr-only">Close</span>
           </Button>
         </div>
-        <CardContent className="p-4">
-          <div className="flex gap-4 items-center">
-            <div className="w-40 h-40 bg-muted rounded-md overflow-hidden">
+
+        {/* Content */}
+        <CardContent className="p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row lg:gap-4 lg:items-center">
+          <div className="flex justify-center items-center">
+            <div className="w-32 h-32 sm:w-40 sm:h-40 bg-muted rounded-md overflow-hidden">
               {selectedImage && (
                 <img
                   src={selectedImage}
@@ -43,27 +48,33 @@ const CartNotificationCard = ({
                 />
               )}
             </div>
-            <div className="p-4 flex-1">
-              <div className="flex flex-row justify-between items-end">
-                <h3 className="text-xl font-bold">{name}</h3>
-                <p className="text-xl font-bold mt-1">
-                  THB {formatPrice(quantity * price)}
-                </p>
-              </div>
-              <p className="text-lg text-muted-foreground mt-3 text-[#626262]">
-                QTY: {quantity}
+          </div>
+          <div className="p-4 flex-1">
+            <div className="flex flex-row justify-between items-start lg:items-center">
+              <h3 className="text-lg sm:text-xl font-bold">{name}</h3>
+              <p className="text-lg font-bold md:translate-y-0 sm:text-xl translate-y-11 mt-0">
+                THB {formatPrice(quantity * price)}
               </p>
             </div>
+            <p className="text-sm sm:text-lg text-muted-foreground mt-2 text-[#626262]">
+              QTY: {quantity}
+            </p>
           </div>
         </CardContent>
-        <CardFooter className="flex flex-row w-full h-1/3 gap-2 p-4 pt-2">
+
+        {/* Footer */}
+        <CardFooter className="flex flex-col sm:flex-row w-full gap-2 p-4 sm:pt-2 lg:pt-4">
           <Button
-            className="w-full bg-[#222222] hover:bg-[#333333] text-white"
+            className="w-full bg-[#222222] hover:bg-[#333333] text-white sm:w-auto sm:flex-1"
             onClick={() => (window.location.href = "/cart")}
           >
             View cart
           </Button>
-          <Button variant="outline" className="w-full" onClick={onClose}>
+          <Button
+            variant="outline"
+            className="w-full sm:w-auto sm:flex-1"
+            onClick={onClose}
+          >
             Continue shopping
           </Button>
         </CardFooter>
