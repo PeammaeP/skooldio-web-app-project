@@ -22,6 +22,8 @@ const ProductDetailCard = ({
 }) => {
   const [selectedImage, setSelectedImage] = useState(imageUrls[0]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [priceProductState, setPriceProductState] = useState(0);
+  const [discounted, setDiscounted] = useState(0);
 
   const handleImageChange = (image, index) => {
     setSelectedImage(image);
@@ -38,11 +40,16 @@ const ProductDetailCard = ({
     handleImageChange(imageUrls[prevIndex], prevIndex);
   };
 
-  const [discounted, setDiscounted] = useState(price);
-
+  // Set price and discount once based on promotionalPrice and price
   useEffect(() => {
-    const discount = Math.round(100 - (promotionalPrice / price) * 100);
-    setDiscounted(discount);
+    if (promotionalPrice && promotionalPrice < price) {
+      const discount = Math.round(100 - (promotionalPrice / price) * 100);
+      setDiscounted(discount);
+      setPriceProductState(promotionalPrice);
+    } else {
+      setDiscounted(0);
+      setPriceProductState(price);
+    }
   }, [promotionalPrice, price]);
 
   return (
@@ -61,8 +68,6 @@ const ProductDetailCard = ({
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
-            {/* w-[66px] h-[34px] top-[24px] */}
-
             <button
               onClick={handleNext}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md opacity-30 transition-opacity"
@@ -74,9 +79,7 @@ const ProductDetailCard = ({
               <div className="absolute w-full max-w-24 h-full max-h-12 top-8 right-0 bg-[#FF000D] text-white text-center text-xl gap-2 pt-[7px] px-[10px] pb-[7px] ">
                 - {discounted}%{" "}
               </div>
-            ) : (
-              <></>
-            )}
+            ) : null}
           </div>
           {/* Sub-Image */}
           <div className="flex flex-row justify-between items-center gap-2 mt-4">
@@ -94,17 +97,12 @@ const ProductDetailCard = ({
               </button>
             ))}
           </div>
-          {/* end sub-image */}
         </div>
         {/* Second Col */}
         <div className="flex flex-col gap-6">
-          {/* ID */}
           <h2 className="text-2xl font-bold text-[#222222]">ID : {id}</h2>
-          {/* Name */}
           <h1 className="text-5xl font-bold text-[#222222] mt-4">{name}</h1>
-          {/* Description */}
           <h2 className="text-[#626262] text-2xl mt-4">{description}</h2>
-          {/* Promotional Price Display ( If has ) */}
           <div className="flex flex-col mt-4">
             {promotionalPrice && promotionalPrice < price ? (
               <>
@@ -115,7 +113,7 @@ const ProductDetailCard = ({
                     gap: "10px",
                     width: "fit-content",
                     height: "fit-content",
-                    opacity: 1, // opacity 0 hides it, so set to 1 for visible
+                    opacity: 1,
                   }}
                 >
                   <span>THB</span>
@@ -132,7 +130,6 @@ const ProductDetailCard = ({
               </div>
             )}
           </div>
-          {/* Star ( Ratings ) */}
           <div className="flex items-center mt-2 gap-1 py-2 w-[130px] h-[30px]">
             {[...Array(5)].map((_, i) => (
               <Star
@@ -143,7 +140,13 @@ const ProductDetailCard = ({
               />
             ))}
           </div>
-          <ProductVariants variants={variants} />
+          <ProductVariants
+            variants={variants}
+            skuCode={skuCode}
+            name={name}
+            imageUrls={imageUrls}
+            price={priceProductState}
+          />
         </div>
       </div>
       <section className="relative flex flex-col items-start mt-36 dtdf:max-w-screen-2xl md:max-w-7xl mx-auto mb-auto">
@@ -152,7 +155,7 @@ const ProductDetailCard = ({
         </h2>
         <div className="bg-white overflow-hidden max-7xl">
           <ProductCardIntersection
-            collection={collection}
+            collection={categories[0]}
             currentProductId={id}
           />
         </div>

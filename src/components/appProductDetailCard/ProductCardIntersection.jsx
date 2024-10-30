@@ -12,7 +12,7 @@ const ProductCardIntersection = ({ collection, currentProductId }) => {
     if (collection === "") return products;
     return products.filter(
       (product) =>
-        product.collection === collection && product.id !== currentProductId
+        product.categories[0] === collection && product.id !== currentProductId
     );
   };
 
