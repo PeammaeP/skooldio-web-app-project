@@ -25,7 +25,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function Navbar() {
   return (
     <Disclosure as="nav" className="bg-customGray w-[1920px] h-[60px] flex justify-between gap-0">
       <div>

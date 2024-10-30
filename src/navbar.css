@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* you can delete this element before work ! ( it stands for test the website display ) */
-:root {
-  background-color: #b3b3b3;
-}
-
 .navbar {
   width: 1920px;
   height: 60 px;
