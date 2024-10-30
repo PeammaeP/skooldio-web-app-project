@@ -149,7 +149,7 @@ const ProductDetailCard = ({
           />
         </div>
       </div>
-      <section className="relative flex flex-col items-start mt-36 dtdf:max-w-screen-2xl md:max-w-7xl mx-auto mb-auto">
+      <section className="relative flex flex-col items-start justify-between mt-36 md:max-w-7xl dtdf:max-w-screen-2xl mx-auto mb-auto">
         <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
           People Also Like These
         </h2>
