@@ -1,10 +1,13 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import FirstPage from "./FirstPage";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CartPage from "./CartPage"; // Adjust path as needed
 
 function App() {
   return (
     <Router>
-      <FirstPage />
+      <Routes>
+        {/* Other routes */}
+        <Route path="/carts/:id" element={<CartPage />} />
+      </Routes>
     </Router>
   );
 }
