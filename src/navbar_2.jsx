@@ -11,6 +11,10 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import Logo from "./assets/Storefront_2.png";
 import Search from "./assets/search.png";
+import Heart from "./assets/heart.png"
+import Person from "./assets/person.png"
+import Bracket from "./assets/bracket.png"
+import BracketR from "./assets/BracketReddot.png"
 
 const navigation = [
   // { name: "WDB", href: "#", current: true },
@@ -73,7 +77,7 @@ export default function Navbar() {
             >
               <span className="absolute" />
               <span className="sr-only">View notifications</span>
-              <img className="size-12" src={Search}/>
+              <img className="size-12" src={Heart}/>
             </button>
             <button
               type="button"
@@ -81,7 +85,7 @@ export default function Navbar() {
             >
               <span className="absolute" />
               <span className="sr-only">View notifications</span>
-              <img className="size-12" src={Search}/>
+              <img className="size-12" src={Person}/>
             </button>
             <button
               type="button"
@@ -89,7 +93,7 @@ export default function Navbar() {
             >
               <span className="absolute" />
               <span className="sr-only">View notifications</span>
-              <img className="size-12" src={Search}/>
+              <img className="size-12" src={BracketR}/>
             </button>
             </div>
         </div>
