@@ -1,12 +1,14 @@
-import AppProductCard from "./components/appProductCard/AppProductCard";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CartPage from "./CartPage"; // Adjust path as needed
 
 function App() {
   return (
-    <>
-      <h1 className="text-2xl font-mono text-[#080808] flex flex-row justify-center g-4 p-4">
-      </h1>
-      <AppProductCard />
-    </>
+    <Router>
+      <Routes>
+        {/* Other routes */}
+        <Route path="/carts/:id" element={<CartPage />} />
+      </Routes>
+    </Router>
   );
 }
 
