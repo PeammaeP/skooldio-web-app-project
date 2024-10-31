@@ -1,9 +1,10 @@
 import CollectionCard from "../components/appProductCard/CollectionCard";
 import AppProductCard from "../components/appProductCard/AppProductCard";
+import Footer from "@/components/landingCard/Footer";
 
 const FirstPage = () => {
   return (
-    <div className="container mx-auto py-12 px-4 sm:px-6 lg:px-8 min-h-screen">
+    <div className="mx-auto py-12 px-4 sm:px-6 lg:px-8 min-h-screen">
       <section className="mb-12">
         <CollectionCard />
       </section>
@@ -15,6 +16,9 @@ const FirstPage = () => {
         <div className="mt-6 gap-6 p-6">
           <AppProductCard />
         </div>
+      </section>
+      <section>
+        <Footer />
       </section>
     </div>
   );

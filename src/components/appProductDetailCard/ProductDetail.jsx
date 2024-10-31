@@ -5,6 +5,7 @@ import formatPrice from "../../utils/formatPrice";
 import ProductVariants from "./ProductVariants";
 import ProductCardIntersection from "./ProductCardIntersection";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Footer from "../landingCard/Footer";
 
 const ProductDetailCard = ({
   id,
@@ -161,6 +162,11 @@ const ProductDetailCard = ({
             collection={categories[0]}
             currentProductId={id}
           />
+        </div>
+      </section>
+      <section>
+        <div className="py-16">
+          <Footer />
         </div>
       </section>
     </div>

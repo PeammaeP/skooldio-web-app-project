@@ -15,6 +15,7 @@ import {
 
 import ProductCardIntersection from "../appProductDetailCard/ProductCardIntersection";
 import CartCard from "./CartCard";
+import Footer from "../landingCard/Footer";
 
 // Create cart context
 export const CartContext = createContext(null);
@@ -297,7 +298,9 @@ export function CartPage() {
   if (!cart.items || cart.items.length === 0) {
     return (
       <div>
-        <CartCard />
+        <section>
+          <CartCard />
+        </section>
         <section className="relative flex flex-col items-start justify-between mt-36 md:max-w-7xl dtdf:max-w-screen-2xl mx-auto mb-auto">
           <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
             People Also Like These
@@ -306,139 +309,151 @@ export function CartPage() {
             <ProductCardIntersection collection={myCollection[0]} />
           </div>
         </section>
+        <section>
+          <div className="py-16">
+            <Footer />
+          </div>
+        </section>
       </div>
     );
   }
 
   return (
     <div className="container px-4 py-6 md:py-12 mx-auto">
-      <h1 className="text-2xl font-bold mb-6">My cart</h1>
-      <div className="grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Items</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              {cart.items.map((item) => {
-                const lastAdded = lastAddedItem.find(
-                  (added) => added.skuCode === item.skuCode
-                );
-                return (
-                  <div key={item.skuCode} className="flex gap-4 py-3">
-                    <div className="w-24 h-24 bg-muted rounded-md overflow-hidden">
-                      {lastAdded && lastAdded.imageUrls?.[0] && (
-                        <img
-                          src={lastAdded.imageUrls[0]}
-                          alt={lastAdded.name}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <div className="flex-1 grid gap-1">
-                      <h3 className="font-medium">
-                        {lastAdded ? lastAdded.name : "Unknown Item"}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        SKU: {item.skuCode}
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() =>
-                            updateQuantity(
-                              item.id,
-                              item.skuCode,
-                              item.productPermalink,
-                              false // Decrease quantity
-                            )
-                          }
-                          disabled={
-                            stock[item.skuCode] === currentProductStock - 1
-                          }
-                        >
-                          <Minus className="h-4 w-4" />
-                          <span className="sr-only">Decrease quantity</span>
-                        </Button>
-                        <span className="w-12 text-center">
-                          {item.quantity}
-                        </span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() =>
-                            updateQuantity(
-                              item.id,
-                              item.skuCode,
-                              item.productPermalink,
-                              true // Increase quantity
-                            )
-                          }
-                          disabled={stock[item.skuCode] === 0}
-                        >
-                          <Plus className="h-4 w-4" />
-                          <span className="sr-only">Increase quantity</span>
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 ml-auto"
-                          onClick={() => removeFromCart(item.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          <span className="sr-only">Remove item</span>
-                        </Button>
+      <section>
+        <h1 className="text-2xl font-bold mb-6">My cart</h1>
+        <div className="grid gap-8 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Items</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {cart.items.map((item) => {
+                  const lastAdded = lastAddedItem.find(
+                    (added) => added.skuCode === item.skuCode
+                  );
+                  return (
+                    <div key={item.skuCode} className="flex gap-4 py-3">
+                      <div className="w-24 h-24 bg-muted rounded-md overflow-hidden">
+                        {lastAdded && lastAdded.imageUrls?.[0] && (
+                          <img
+                            src={lastAdded.imageUrls[0]}
+                            alt={lastAdded.name}
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                      <div className="flex-1 grid gap-1">
+                        <h3 className="font-medium">
+                          {lastAdded ? lastAdded.name : "Unknown Item"}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          SKU: {item.skuCode}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() =>
+                              updateQuantity(
+                                item.id,
+                                item.skuCode,
+                                item.productPermalink,
+                                false // Decrease quantity
+                              )
+                            }
+                            disabled={
+                              stock[item.skuCode] === currentProductStock - 1
+                            }
+                          >
+                            <Minus className="h-4 w-4" />
+                            <span className="sr-only">Decrease quantity</span>
+                          </Button>
+                          <span className="w-12 text-center">
+                            {item.quantity}
+                          </span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-8 w-8"
+                            onClick={() =>
+                              updateQuantity(
+                                item.id,
+                                item.skuCode,
+                                item.productPermalink,
+                                true // Increase quantity
+                              )
+                            }
+                            disabled={stock[item.skuCode] === 0}
+                          >
+                            <Plus className="h-4 w-4" />
+                            <span className="sr-only">Increase quantity</span>
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 ml-auto"
+                            onClick={() => removeFromCart(item.id)}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Remove item</span>
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="font-medium">
+                        THB{" "}
+                        {lastAdded
+                          ? formatPrice(lastAdded.price * item.quantity)
+                          : "N/A"}
                       </div>
                     </div>
-                    <div className="font-medium">
-                      THB{" "}
-                      {lastAdded
-                        ? formatPrice(lastAdded.price * item.quantity)
-                        : "N/A"}
-                    </div>
-                  </div>
-                );
-              })}
-            </CardContent>
-          </Card>
+                  );
+                })}
+              </CardContent>
+            </Card>
+          </div>
+          <div>
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>Summary</CardTitle>
+                  <span className="text-muted-foreground">
+                    {cart.items.length} items
+                  </span>
+                </div>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span>THB {formatPrice(subtotal)}</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Shipping fee</span>
+                  <span>THB {formatPrice(shippingFee)}</span>
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between font-medium">
+                  <span>Total</span>
+                  <span>THB {formatPrice(total)}</span>
+                </div>
+              </CardContent>
+              <CardFooter className="flex flex-col gap-2">
+                <Button className="w-full">Check out</Button>
+                <Button variant="outline" className="w-full" asChild>
+                  <Link to="/">Continue shopping</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
         </div>
-        <div>
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Summary</CardTitle>
-                <span className="text-muted-foreground">
-                  {cart.items.length} items
-                </span>
-              </div>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Subtotal</span>
-                <span>THB {formatPrice(subtotal)}</span>
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Shipping fee</span>
-                <span>THB {formatPrice(shippingFee)}</span>
-              </div>
-              <Separator />
-              <div className="flex items-center justify-between font-medium">
-                <span>Total</span>
-                <span>THB {formatPrice(total)}</span>
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-col gap-2">
-              <Button className="w-full">Check out</Button>
-              <Button variant="outline" className="w-full" asChild>
-                <Link to="/">Continue shopping</Link>
-              </Button>
-            </CardFooter>
-          </Card>
+      </section>
+      <section>
+        <div className="py-16">
+          <Footer />
         </div>
-      </div>
+      </section>
     </div>
   );
 }
