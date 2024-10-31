@@ -4,6 +4,7 @@ const CollectionCard = () => {
   const [collectionDetail1, setCollectionDetail1] = useState(null);
   const [collectionDetail2, setCollectionDetail2] = useState(null);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
       setLoading(true);

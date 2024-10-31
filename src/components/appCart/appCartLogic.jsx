@@ -75,8 +75,44 @@ export function CartProvider({ children }) {
     }
   };
 
-  const removeFromCart = (skuCode) => {
-    setCart((prevCart) => prevCart.filter((item) => item.skuCode !== skuCode));
+  // const removeFromCart = (skuCode) => {
+  //   setCart((prevCart) => prevCart.filter((item) => item.skuCode !== skuCode));
+  // };
+
+  const removeFromCart = async (itemId) => {
+    if (!cartId) {
+      console.error("Cannot remove item: Cart ID is not set");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${itemId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to remove item from cart");
+      }
+
+      // Update local state
+      setCart((prevCart) => ({
+        ...prevCart,
+        items: prevCart.items.filter((item) => item.id !== itemId),
+      }));
+
+      // Remove item from lastAddedItems
+      const removedItem = cart.items.find((item) => item.id === itemId);
+      if (removedItem) {
+        setLastAddedItems((prevItems) =>
+          prevItems.filter((item) => item.skuCode !== removedItem.skuCode)
+        );
+      }
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+    }
   };
 
   const updateQuantity = (skuCode, newQuantity) => {
@@ -217,7 +253,7 @@ export function CartPage() {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 ml-auto"
-                          onClick={() => removeFromCart(item.skuCode)}
+                          onClick={() => removeFromCart(item.id)}
                         >
                           <Trash2 className="h-4 w-4" />
                           <span className="sr-only">Remove item</span>
