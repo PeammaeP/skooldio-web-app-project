@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-8">
+    <footer className="bg-customGray text-white py-8">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Featured Product Section */}
         <div>
@@ -60,7 +60,7 @@ const Footer = () => {
               placeholder="Enter your email"
               className="p-2 w-full rounded text-gray-900 mb-2"
             />
-            <button className="bg-yellow-500 text-gray-900 font-bold py-2 px-4 w-full rounded hover:bg-yellow-600">
+            <button className="bg-customYellow text-gray-900 font-bold py-2 px-4 w-full rounded hover:bg-customYellow">
               Subscribe
             </button>
           </form>
