@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Plus, Minus, Trash2 } from "lucide-react";
+import { Plus, Minus, Trash2 } from "lucide-react";
 import formatPrice from "@/utils/formatPrice";
 
 import { Button } from "@/components/ui/button";
