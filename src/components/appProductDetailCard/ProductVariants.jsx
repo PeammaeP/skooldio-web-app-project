@@ -12,13 +12,11 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
   const [hasSize, setHasSize] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [showCartNotification, setShowCartNotification] = useState(false);
+  
 
   const { stock, addToCart, updateStock } = useCart();
 
   console.log("Current stock context:", stock); // Add this line
-
-  // Also verify the context is being exported correctly from CartProvider
-  console.log("CartProvider stock:", stock); // Add this in CartProvider
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
@@ -32,8 +30,6 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
   const handleQuantityChange = (quantity) => {
     setSelectedQuantity(quantity);
   };
-
-  console.log("Stock", stock);
 
   // restructure the variants of the API
   const groupedVariants = useMemo(() => {

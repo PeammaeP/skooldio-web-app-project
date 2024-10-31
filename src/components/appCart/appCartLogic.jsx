@@ -26,12 +26,20 @@ export function CartProvider({ children }) {
   const [lastAddedItem, setLastAddedItems] = useState([]);
   const [cartId, setCardId] = useState(null);
   const [stock, setStock] = useState({});
+  const [initialStock, setInitialStock] = useState({}); // Store the initial stock here
 
+  // Update stock and track initial stock if not already set
   const updateStock = (skuCode, newStock) => {
     setStock((prevStock) => ({
       ...prevStock,
       [skuCode]: newStock,
     }));
+    if (!initialStock[skuCode]) {
+      setInitialStock((prev) => ({
+        ...prev,
+        [skuCode]: newStock,
+      }));
+    }
   };
 
   const fetchProductStock = async (productPermalink, skuCode) => {
@@ -124,15 +132,20 @@ export function CartProvider({ children }) {
         throw new Error("Failed to remove item from cart");
       }
 
-      // Update local state
-      setCart((prevCart) => ({
-        ...prevCart,
-        items: prevCart.items.filter((item) => item.id !== itemId),
-      }));
-
-      // Remove item from lastAddedItems
       const removedItem = cart.items.find((item) => item.id === itemId);
       if (removedItem) {
+        // Restore stock to the original stock for removed item
+        const restoredStock =
+          (stock[removedItem.skuCode] || 0) + removedItem.quantity;
+
+        updateStock(removedItem.skuCode, restoredStock);
+
+        // Update local state
+        setCart((prevCart) => ({
+          ...prevCart,
+          items: prevCart.items.filter((item) => item.id !== itemId),
+        }));
+
         setLastAddedItems((prevItems) =>
           prevItems.filter((item) => item.skuCode !== removedItem.skuCode)
         );
@@ -192,10 +205,8 @@ export function CartProvider({ children }) {
 
       const updatedCart = await response.json();
 
-      // Update local state
       setCart(updatedCart);
 
-      // Update lastAddedItems if necessary
       setLastAddedItems((prevItems) =>
         prevItems.map((item) =>
           item.skuCode === skuCode
@@ -245,7 +256,7 @@ export function useCart() {
 }
 
 export function CartPage() {
-  const { cart, removeFromCart, updateQuantity, lastAddedItem } =
+  const { cart, removeFromCart, updateQuantity, lastAddedItem, stock } =
     useContext(CartContext);
 
   console.log(cart);
@@ -321,7 +332,7 @@ export function CartPage() {
                             updateQuantity(
                               item.id,
                               item.skuCode,
-                              item.quantity - 1,
+                              stock,
                               item.productPermalink
                             )
                           }
@@ -340,7 +351,7 @@ export function CartPage() {
                             updateQuantity(
                               item.id,
                               item.skuCode,
-                              item.quantity + 1,
+                              stock,
                               item.productPermalink
                             )
                           }
