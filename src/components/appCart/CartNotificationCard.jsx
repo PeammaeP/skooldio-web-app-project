@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 import formatPrice from "@/utils/formatPrice";
 import { Link } from "react-router-dom";
-import { useCart } from "./appCartLogic";
+import { useCart } from "../../pages/AppCartLogic";
 
 const CartNotificationCard = ({
   isOpen,

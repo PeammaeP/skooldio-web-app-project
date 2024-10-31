@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import QuantityChangeSelector from "./QuantityChangeSelector";
 import CartNotificationCard from "../appCart/CartNotificationCard";
-import { useCart } from "../appCart/appCartLogic";
+import { useCart } from "../../pages/AppCartLogic";
 
 const sizeOrder = ["XS", "S", "M", "L", "XL"];
 

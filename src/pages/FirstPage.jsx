@@ -1,14 +1,23 @@
 import CollectionCard from "../components/appProductCard/CollectionCard";
-import AppProductCard from "../components/appProductCard/AppProductCard";
+import AppProductCard from "./AppProductCard";
 import Footer from "@/components/landingCard/Footer";
 import Navbar from "@/components/landingCard/Navbar";
+import Background from ".././img/background.jpeg";
 
 const FirstPage = () => {
   return (
     <div>
+      <section className="mt-16">
+        <img
+          src={Background}
+          alt="Background"
+          className="w-full h-[420px] object-cover"
+        ></img>
+      </section>
       <section className="mt-32">
         <Navbar />
       </section>
+
       <section className="mb-12">
         <CollectionCard />
       </section>

@@ -3,9 +3,9 @@ import { createRoot } from "react-dom/client";
 import "./css/index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import FirstPage from "./pages/FirstPage.jsx";
-import AppProductDetail from "./components/appProductDetailCard/AppProductDetail.jsx";
-import { CartProvider } from "./components/appCart/appCartLogic"; // import CartProvider
-import { CartPage } from "./components/appCart/appCartLogic";
+import AppProductDetail from "./pages/AppProductDetail";
+import { CartProvider } from "./pages/AppCartLogic"; // import CartProvider
+import { CartPage } from "./pages/AppCartLogic";
 const router = createBrowserRouter([
   {
     path: "/",
