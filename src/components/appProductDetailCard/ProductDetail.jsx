@@ -145,6 +145,8 @@ const ProductDetailCard = ({
             skuCode={skuCode}
             name={name}
             imageUrls={imageUrls}
+            collection={categories[0]}
+            currentProductId={id}
             price={priceProductState}
           />
         </div>
@@ -185,6 +187,7 @@ ProductDetailCard.propTypes = {
       colorCode: PropTypes.string.isRequired,
     })
   ).isRequired,
+  
 };
 
 export default ProductDetailCard;

@@ -4,8 +4,8 @@ import "./css/index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import FirstPage from "./pages/FirstPage.jsx";
 import AppProductDetail from "./components/appProductDetailCard/AppProductDetail.jsx";
-import CartPage from "./pages/CartPage";
-
+import { CartProvider } from "./components/appCart/appCartLogic"; // import CartProvider
+import { CartPage } from "./components/appCart/appCartLogic";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,10 +19,16 @@ const router = createBrowserRouter([
     path: "/carts",
     element: <CartPage />,
   },
+  {
+    path: "/carts/:id",
+    element: <CartPage />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <CartProvider>
+      <RouterProvider router={router} />
+    </CartProvider>
   </StrictMode>
 );

@@ -2,16 +2,23 @@ import { useMemo, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import QuantityChangeSelector from "./QuantityChangeSelector";
 import CartNotificationCard from "../appCart/CartNotificationCard";
+import { useCart } from "../appCart/appCartLogic";
 
 const sizeOrder = ["XS", "S", "M", "L", "XL"];
 
-const ProductVariants = ({ variants, name, imageUrls, price }) => {
+const ProductVariants = ({
+  variants,
+  name,
+  imageUrls,
+  price,
+}) => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [hasSize, setHasSize] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [showCartNotification, setShowCartNotification] = useState(false);
   const [productSkuCode, setProductSkuCode] = useState("");
+  const { addToCart } = useCart();
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
@@ -61,14 +68,31 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
     return [];
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (selectedColor && (selectedSize || !hasSize)) {
       const selectedVariant = hasSize
         ? groupedVariants[selectedColor].sizes[selectedSize]
         : groupedVariants[selectedColor];
-      console.log(
-        `Added to cart: ${selectedVariant.skuCode} , Quantity ${selectedQuantity}`
-      );
+      console.log(name);
+      console.log(imageUrls);
+      console.log(price);
+
+      try {
+        await addToCart([
+          {
+            skuCode: selectedVariant.skuCode,
+            quantity: selectedQuantity,
+            name,
+            imageUrls,
+            price,
+            color: selectedColor,
+            size: hasSize ? selectedSize : null,
+          },
+        ]);
+      } catch (error) {
+        console.error("Failed to add item to cart:", error);
+        // Handle error (e.g., show error message to user)
+      }
       setShowCartNotification(true);
       setProductSkuCode(selectedVariant.skuCode);
     }
@@ -174,7 +198,7 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
           name={name}
           imageUrls={imageUrls}
           quantity={selectedQuantity}
-          skuCode={productSkuCode}
+          // skuCode={productSkuCode}
           price={price}
         />
       )}

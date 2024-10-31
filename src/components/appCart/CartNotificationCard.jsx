@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter } from "../ui/card";
 import { Button } from "../ui/button";
 import formatPrice from "@/utils/formatPrice";
 import { Link } from "react-router-dom";
+import { useCart } from "./appCartLogic";
 
 const CartNotificationCard = ({
   isOpen,
@@ -11,9 +12,10 @@ const CartNotificationCard = ({
   name,
   imageUrls,
   quantity,
-  skuCode,
   price,
 }) => {
+  const { cartId } = useCart();
+
   if (!isOpen) return null;
 
   const selectedImage = imageUrls[0];
@@ -63,11 +65,15 @@ const CartNotificationCard = ({
 
         {/* Footer */}
         <CardFooter className="flex flex-col sm:flex-row w-full gap-2 p-4 sm:pt-2 lg:pt-4">
-          <Link to="/carts" className="w-full sm:w-auto sm:flex-1">
-            <Button className="w-full bg-[#222222] hover:bg-[#333333] text-white">
+          <Link to={`/carts/${cartId}`} className="w-full sm:w-auto sm:flex-1">
+            <Button
+              onClick={onClose}
+              className="w-full bg-[#222222] hover:bg-[#333333] text-white"
+            >
               View cart
             </Button>
           </Link>
+
           <Button
             variant="outline"
             className="w-full sm:w-auto sm:flex-1"
@@ -87,7 +93,6 @@ CartNotificationCard.propTypes = {
   name: PropTypes.string.isRequired,
   imageUrls: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   quantity: PropTypes.number.isRequired,
-  skuCode: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
 };
 
