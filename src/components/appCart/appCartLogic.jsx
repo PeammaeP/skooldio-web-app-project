@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Plus, Minus, Trash2 } from "lucide-react";
+import { Plus, Minus, Trash2 } from "lucide-react";
 import formatPrice from "@/utils/formatPrice";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 
 import ProductCardIntersection from "../appProductDetailCard/ProductCardIntersection";
+import CartCard from "./CartCard";
 
 // Create cart context
 export const CartContext = createContext(null);
@@ -27,16 +28,23 @@ export function CartProvider({ children }) {
 
   const addToCart = async (items) => {
     try {
-      const response = await fetch(
-        "https://api.storefront.wdb.skooldio.dev/carts",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ items }),
-        }
-      );
+      let url = "https://api.storefront.wdb.skooldio.dev/carts";
+      let method = "POST";
+      let body = { items };
+
+      if (cartId) {
+        url += `/${cartId}/items`;
+        method = "POST";
+        body = { items };
+      }
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
 
       if (!response.ok) {
         throw new Error("Failed to add items to cart");
@@ -49,7 +57,18 @@ export function CartProvider({ children }) {
 
       setCart(data || []);
       setCardId(data.id);
-      setLastAddedItems(items);
+      setLastAddedItems((prevItems) => {
+        const newItems = [...prevItems];
+        items.forEach((item) => {
+          const index = newItems.findIndex((i) => i.skuCode === item.skuCode);
+          if (index !== -1) {
+            newItems[index] = item;
+          } else {
+            newItems.push(item);
+          }
+        });
+        return newItems;
+      });
       setIsNotificationOpen(true);
     } catch (error) {
       console.error("Error adding items to cart:", error);
@@ -62,11 +81,12 @@ export function CartProvider({ children }) {
 
   const updateQuantity = (skuCode, newQuantity) => {
     if (newQuantity < 1) return;
-    setCart((prevCart) =>
-      prevCart.map((item) =>
+    setCart((prevCart) => ({
+      ...prevCart,
+      items: prevCart.items.map((item) =>
         item.skuCode === skuCode ? { ...item, quantity: newQuantity } : item
-      )
-    );
+      ),
+    }));
   };
 
   const closeNotification = () => {
@@ -121,68 +141,8 @@ export function CartPage() {
 
   if (!cart.items || cart.items.length === 0) {
     return (
-      <div className="container px-4 py-6 md:py-12">
-        <h1 className="text-2xl font-bold mb-6">My cart</h1>
-        <div className="grid gap-8 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Items</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col items-center justify-center py-20 text-center">
-                <ShoppingCart className="h-20 w-20 text-muted-foreground/30 mb-6" />
-                <h2 className="text-2xl font-semibold mb-2">
-                  Your cart is empty
-                </h2>
-                <p className="text-muted-foreground mb-6 max-w-sm">
-                  Looks like you have not added anything to your cart. Go ahead
-                  & explore top categories.
-                </p>
-                <Button asChild>
-                  <Link to="/">Continue shopping</Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-          <div>
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Summary</CardTitle>
-                  <span className="text-muted-foreground">0 items</span>
-                </div>
-              </CardHeader>
-              <CardContent className="grid gap-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">No item</span>
-                  <span>0.00</span>
-                </div>
-                <Separator />
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Subtotal</span>
-                  <span>0.00</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Shipping fee</span>
-                  <span>0.00</span>
-                </div>
-                <Separator />
-                <div className="flex items-center justify-between font-medium">
-                  <span>Total</span>
-                  <span>0.00</span>
-                </div>
-              </CardContent>
-              <CardFooter className="flex flex-col gap-2">
-                <Button className="w-full" disabled>
-                  Check out
-                </Button>
-                <Button variant="outline" className="w-full" asChild>
-                  <Link to="/">Continue shopping</Link>
-                </Button>
-              </CardFooter>
-            </Card>
-          </div>
-        </div>
+      <div>
+        <CartCard />
         <section className="relative flex flex-col items-start justify-between mt-36 md:max-w-7xl dtdf:max-w-screen-2xl mx-auto mb-auto">
           <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
             People Also Like These
