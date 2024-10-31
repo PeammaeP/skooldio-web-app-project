@@ -6,18 +6,12 @@ import { useCart } from "../appCart/appCartLogic";
 
 const sizeOrder = ["XS", "S", "M", "L", "XL"];
 
-const ProductVariants = ({
-  variants,
-  name,
-  imageUrls,
-  price,
-}) => {
+const ProductVariants = ({ variants, name, imageUrls, price }) => {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [hasSize, setHasSize] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [showCartNotification, setShowCartNotification] = useState(false);
-  const [productSkuCode, setProductSkuCode] = useState("");
   const { addToCart } = useCart();
 
   const handleColorSelect = (color) => {
@@ -94,7 +88,6 @@ const ProductVariants = ({
         // Handle error (e.g., show error message to user)
       }
       setShowCartNotification(true);
-      setProductSkuCode(selectedVariant.skuCode);
     }
   };
 
