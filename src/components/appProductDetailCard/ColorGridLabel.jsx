@@ -4,7 +4,7 @@ import { useState } from "react";
 const ColorGridLabel = ({ colorCode, label }) => {
   const [selectedColor, setSelectedColor] = useState(label);
 
-  console.log("MyColor in Component : ", selectedColor, "Label Color", label);
+  // console.log("MyColor in Component : ", selectedColor, "Label Color", label);
 
   return (
     <div className="flex flex-col items-start">

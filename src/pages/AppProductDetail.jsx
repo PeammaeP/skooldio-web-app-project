@@ -12,7 +12,7 @@ const AppProductDetail = () => {
   const [loadingState, setLoadingState] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log(permalink);
+  // console.log(permalink);
 
   useEffect(() => {
     const functionGetProductDetail = async () => {
