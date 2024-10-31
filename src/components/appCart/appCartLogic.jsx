@@ -75,10 +75,6 @@ export function CartProvider({ children }) {
     }
   };
 
-  // const removeFromCart = (skuCode) => {
-  //   setCart((prevCart) => prevCart.filter((item) => item.skuCode !== skuCode));
-  // };
-
   const removeFromCart = async (itemId) => {
     if (!cartId) {
       console.error("Cannot remove item: Cart ID is not set");
@@ -115,14 +111,45 @@ export function CartProvider({ children }) {
     }
   };
 
-  const updateQuantity = (skuCode, newQuantity) => {
-    if (newQuantity < 1) return;
-    setCart((prevCart) => ({
-      ...prevCart,
-      items: prevCart.items.map((item) =>
-        item.skuCode === skuCode ? { ...item, quantity: newQuantity } : item
-      ),
-    }));
+  const updateQuantity = async (itemId, skuCode, newQuantity) => {
+    if (!cartId) {
+      console.error("Cannot update item: Cart ID is not set");
+      return;
+    }
+
+    if (newQuantity < 1) {
+      console.error("Quantity must be at least 1");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${itemId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ quantity: newQuantity, skuCode }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update item quantity");
+      }
+
+      const updatedCart = await response.json();
+
+      setCart(updatedCart);
+
+      setLastAddedItems((prevItems) =>
+        prevItems.map((item) =>
+          item.skuCode === skuCode ? { ...item, quantity: newQuantity } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error updating item quantity:", error);
+    }
   };
 
   const closeNotification = () => {
@@ -229,7 +256,11 @@ export function CartPage() {
                           size="icon"
                           className="h-8 w-8"
                           onClick={() =>
-                            updateQuantity(item.skuCode, item.quantity - 1)
+                            updateQuantity(
+                              item.id,
+                              item.skuCode,
+                              item.quantity - 1
+                            )
                           }
                         >
                           <Minus className="h-4 w-4" />
@@ -243,7 +274,11 @@ export function CartPage() {
                           size="icon"
                           className="h-8 w-8"
                           onClick={() =>
-                            updateQuantity(item.skuCode, item.quantity + 1)
+                            updateQuantity(
+                              item.id,
+                              item.skuCode,
+                              item.quantity + 1
+                            )
                           }
                         >
                           <Plus className="h-4 w-4" />
