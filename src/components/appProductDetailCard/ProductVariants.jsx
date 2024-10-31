@@ -12,7 +12,6 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
   const [hasSize, setHasSize] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [showCartNotification, setShowCartNotification] = useState(false);
-  
 
   const { stock, addToCart, updateStock } = useCart();
 

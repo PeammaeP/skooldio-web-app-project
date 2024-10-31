@@ -27,6 +27,7 @@ export function CartProvider({ children }) {
   const [cartId, setCardId] = useState(null);
   const [stock, setStock] = useState({});
   const [initialStock, setInitialStock] = useState({}); // Store the initial stock here
+  const [currentProductStock, setCurrentProductStock] = useState(0);
 
   // Update stock and track initial stock if not already set
   const updateStock = (skuCode, newStock) => {
@@ -158,16 +159,11 @@ export function CartProvider({ children }) {
   const updateQuantity = async (
     itemId,
     skuCode,
-    newQuantity,
-    productPermalink
+    productPermalink,
+    isIncreasing
   ) => {
     if (!cartId) {
       console.error("Cannot update item: Cart ID is not set");
-      return;
-    }
-
-    if (newQuantity < 1) {
-      console.error("Quantity must be at least 1");
       return;
     }
 
@@ -175,18 +171,30 @@ export function CartProvider({ children }) {
       // Fetch current stock
       const currentStock = await fetchProductStock(productPermalink, skuCode);
 
+      setCurrentProductStock(currentStock);
+
+      // Find the current item in the cart
+      const currentItem = cart.items.find((item) => item.id === itemId);
+      if (!currentItem) {
+        console.error("Item not found in cart");
+        return;
+      }
+
+      // Calculate new quantity
+      const newQuantity = isIncreasing
+        ? currentItem.quantity + 1
+        : currentItem.quantity - 1;
+
+      // Validate quantity
+      if (newQuantity < 1) {
+        console.error("Quantity must be at least 1");
+        return;
+      }
+
       if (newQuantity > currentStock) {
         console.error("Requested quantity exceeds available stock");
         return;
       }
-
-      console.log("Current Stock ", currentStock);
-      console.log("New Quantity ", newQuantity);
-
-      const remainingStock = currentStock - newQuantity;
-      updateStock(skuCode, remainingStock);
-
-      console.log("Remaining Stock ", remainingStock);
 
       const response = await fetch(
         `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${itemId}`,
@@ -195,7 +203,7 @@ export function CartProvider({ children }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ quantity: remainingStock, skuCode }),
+          body: JSON.stringify({ quantity: newQuantity, skuCode }),
         }
       );
 
@@ -205,15 +213,19 @@ export function CartProvider({ children }) {
 
       const updatedCart = await response.json();
 
+      // Update stock
+      updateStock(skuCode, currentStock - newQuantity);
+
       setCart(updatedCart);
 
+      // Update last added items
       setLastAddedItems((prevItems) =>
         prevItems.map((item) =>
           item.skuCode === skuCode
             ? {
                 ...item,
                 quantity: newQuantity,
-                remains: remainingStock,
+                remains: currentStock - newQuantity,
               }
             : item
         )
@@ -240,6 +252,7 @@ export function CartProvider({ children }) {
         cartId,
         stock, // Add stock here
         updateStock, // Add updateStock here
+        currentProductStock,
       }}
     >
       {children}
@@ -256,11 +269,17 @@ export function useCart() {
 }
 
 export function CartPage() {
-  const { cart, removeFromCart, updateQuantity, lastAddedItem, stock } =
-    useContext(CartContext);
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    lastAddedItem,
+    stock,
+    currentProductStock,
+  } = useContext(CartContext);
 
-  console.log(cart);
-  console.log(lastAddedItem);
+  console.log("Stock", stock);
+  console.log("CurrentProduct", currentProductStock);
 
   const subtotal = cart.items
     ? cart.items.reduce((sum, item) => {
@@ -332,9 +351,12 @@ export function CartPage() {
                             updateQuantity(
                               item.id,
                               item.skuCode,
-                              stock,
-                              item.productPermalink
+                              item.productPermalink,
+                              false // Decrease quantity
                             )
+                          }
+                          disabled={
+                            stock[item.skuCode] === currentProductStock - 1
                           }
                         >
                           <Minus className="h-4 w-4" />
@@ -351,10 +373,11 @@ export function CartPage() {
                             updateQuantity(
                               item.id,
                               item.skuCode,
-                              stock,
-                              item.productPermalink
+                              item.productPermalink,
+                              true // Increase quantity
                             )
                           }
+                          disabled={stock[item.skuCode] === 0}
                         >
                           <Plus className="h-4 w-4" />
                           <span className="sr-only">Increase quantity</span>
