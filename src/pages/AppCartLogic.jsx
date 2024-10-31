@@ -94,8 +94,8 @@ export function CartProvider({ children }) {
         updateStock(item.skuCode, newStock);
       });
 
-      console.log(data);
-      console.log(items);
+      // console.log(data);
+      // console.log(items);
 
       setCart(data || []);
       setCardId(data.id);
@@ -280,8 +280,8 @@ export function CartPage() {
     currentProductStock,
   } = useContext(CartContext);
 
-  console.log("Stock", stock);
-  console.log("CurrentProduct", currentProductStock);
+  // console.log("Stock", stock);
+  // console.log("CurrentProduct", currentProductStock);
 
   const subtotal = cart.items
     ? cart.items.reduce((sum, item) => {
@@ -305,8 +305,8 @@ export function CartPage() {
         <section>
           <CartCard />
         </section>
-        <section className="relative flex flex-col items-start justify-between mt-36 md:max-w-7xl dtdf:max-w-screen-2xl mx-auto mb-auto">
-          <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
+        <section className="relative mt-36 md:max-w-7xl dtdf:max-w-screen-2xl mx-auto mb-auto">
+          <h2 className="text-3xl md:text-3xl font-bold text-[#222222] md:px-6 flex md:items-start md:justify-start items-center justify-center">
             People Also Like These
           </h2>
           <div className="bg-white overflow-hidden max-7xl">

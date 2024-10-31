@@ -20,11 +20,11 @@ const ProductCardIntersection = ({ collection, currentProductId }) => {
     const fetchDataProduct = async (API) => {
       const dataProduct = await fetchAPI(API);
       if (dataProduct && dataProduct.data) {
-        console.log("Have Product from FetchAPI");
-        console.log(dataProduct.data);
+        // console.log("Have Product from FetchAPI");
+        // console.log(dataProduct.data);
         setProductDisplay(dataProduct.data);
       } else {
-        console.log("Not Have Some Data from Fetch");
+        // console.log("Not Have Some Data from Fetch");
       }
     };
     const loadingTimeOut = setTimeout(() => {
@@ -34,9 +34,13 @@ const ProductCardIntersection = ({ collection, currentProductId }) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-16">
-      {filterValueCollection(productDisplay, collection, currentProductId).map(
-        (product) => (
+    <div className="mt-6 gap-6 p-6 md:gap-0 md:p-0">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-16 p-6">
+        {filterValueCollection(
+          productDisplay,
+          collection,
+          currentProductId
+        ).map((product) => (
           <Link
             key={product.id}
             to={`/products/${product.permalink}`}
@@ -52,8 +56,8 @@ const ProductCardIntersection = ({ collection, currentProductId }) => {
               imageUrls={product.imageUrls[0]}
             />
           </Link>
-        )
-      )}
+        ))}
+      </div>
     </div>
   );
 };

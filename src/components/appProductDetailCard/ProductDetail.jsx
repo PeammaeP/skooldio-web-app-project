@@ -58,9 +58,9 @@ const ProductDetailCard = ({
       <section className="mt-36">
         <Navbar />
       </section>
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 mt-6 gap-6 mx-auto md:max-w-7xl dtdf:max-w-screen-2xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 mt-6 p-8 gap-6 mx-auto md:max-w-7xl dtdf:max-w-screen-2xl">
         {/* First Col */}
-        <div className="relative flex flex-col">
+        <div className="relative flex flex-col justify-center items-center gap-6">
           {/* Main Image */}
           <div className="relative w-full max-w-7xl h-auto">
             <img src={selectedImage} alt={name} className="w-full h-auto" />
@@ -156,8 +156,8 @@ const ProductDetailCard = ({
           />
         </div>
       </div>
-      <section className="relative flex flex-col items-start justify-between mt-36 md:max-w-7xl dtdf:max-w-screen-2xl mx-auto mb-auto">
-        <h2 className="text-3xl md:text-3xl font-bold text-[#222222] flex items-start justify-start">
+      <section className="relative mt-36 md:max-w-7xl dtdf:max-w-screen-2xl mx-auto mb-auto">
+        <h2 className="text-3xl md:text-3xl font-bold text-[#222222] md:px-6 flex md:items-start md:justify-start items-center justify-center">
           People Also Like These
         </h2>
         <div className="bg-white overflow-hidden">

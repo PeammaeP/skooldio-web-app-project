@@ -15,7 +15,7 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
 
   const { stock, addToCart, updateStock } = useCart();
 
-  console.log("Current stock context:", stock); // Add this line
+  // console.log("Current stock context:", stock); // Add this line
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
@@ -71,9 +71,9 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
       const selectedVariant = hasSize
         ? groupedVariants[selectedColor].sizes[selectedSize]
         : groupedVariants[selectedColor];
-      console.log(name);
-      console.log(imageUrls);
-      console.log(price);
+      // console.log(name);
+      // console.log(imageUrls);
+      // console.log(price);
 
       try {
         await addToCart([
