@@ -44,17 +44,27 @@ const QuantityChangeSelector = ({ maxQuantity, onChange }) => {
             aria-labelledby="listbox-label"
             aria-activedescendant="listbox-option-0"
           >
-            {[...Array(maxQuantity)].map((_, index) => (
+            {maxQuantity > 0 ? (
+              [...Array(maxQuantity)].map((_, index) => (
+                <li
+                  key={index}
+                  className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-[#C1CD00] hover:text-white"
+                  id={`listbox-option-${index}`}
+                  role="option"
+                  onClick={() => handleQuantityChange(index + 1)}
+                >
+                  <span className="block truncate">{index + 1}</span>
+                </li>
+              ))
+            ) : (
               <li
-                key={index}
-                className="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-[#C1CD00] hover:text-white"
-                id={`listbox-option-${index}`}
+                className="text-gray-500 bg-gray-100 cursor-not-allowed select-none relative py-2 pl-3 pr-9"
                 role="option"
-                onClick={() => handleQuantityChange(index + 1)}
+                aria-disabled="true"
               >
-                <span className="block truncate">{index + 1}</span>
+                <span className="block truncate">Out of Stock</span>
               </li>
-            ))}
+            )}
           </ul>
         )}
       </div>

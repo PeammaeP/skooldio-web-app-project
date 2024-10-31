@@ -25,6 +25,31 @@ export function CartProvider({ children }) {
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [lastAddedItem, setLastAddedItems] = useState([]);
   const [cartId, setCardId] = useState(null);
+  const [stock, setStock] = useState({});
+
+  const updateStock = (skuCode, newStock) => {
+    setStock((prevStock) => ({
+      ...prevStock,
+      [skuCode]: newStock,
+    }));
+  };
+
+  const fetchProductStock = async (productPermalink, skuCode) => {
+    try {
+      const response = await fetch(
+        `https://api.storefront.wdb.skooldio.dev/products/${productPermalink}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch product details");
+      }
+      const productData = await response.json();
+      const variant = productData.variants.find((v) => v.skuCode === skuCode);
+      return variant ? variant.remains : 0;
+    } catch (error) {
+      console.error("Error fetching product stock:", error);
+      return 0;
+    }
+  };
 
   const addToCart = async (items) => {
     try {
@@ -51,6 +76,12 @@ export function CartProvider({ children }) {
       }
 
       const data = await response.json();
+
+      // adjust the stock of items
+      items.forEach((item) => {
+        const newStock = (stock[item.skuCode] || item.remains) - item.quantity;
+        updateStock(item.skuCode, newStock);
+      });
 
       console.log(data);
       console.log(items);
@@ -111,7 +142,12 @@ export function CartProvider({ children }) {
     }
   };
 
-  const updateQuantity = async (itemId, skuCode, newQuantity) => {
+  const updateQuantity = async (
+    itemId,
+    skuCode,
+    newQuantity,
+    productPermalink
+  ) => {
     if (!cartId) {
       console.error("Cannot update item: Cart ID is not set");
       return;
@@ -123,6 +159,22 @@ export function CartProvider({ children }) {
     }
 
     try {
+      // Fetch current stock
+      const currentStock = await fetchProductStock(productPermalink, skuCode);
+
+      if (newQuantity > currentStock) {
+        console.error("Requested quantity exceeds available stock");
+        return;
+      }
+
+      console.log("Current Stock ", currentStock);
+      console.log("New Quantity ", newQuantity);
+
+      const remainingStock = currentStock - newQuantity;
+      updateStock(skuCode, remainingStock);
+
+      console.log("Remaining Stock ", remainingStock);
+
       const response = await fetch(
         `https://api.storefront.wdb.skooldio.dev/carts/${cartId}/items/${itemId}`,
         {
@@ -130,7 +182,7 @@ export function CartProvider({ children }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ quantity: newQuantity, skuCode }),
+          body: JSON.stringify({ quantity: remainingStock, skuCode }),
         }
       );
 
@@ -140,11 +192,19 @@ export function CartProvider({ children }) {
 
       const updatedCart = await response.json();
 
+      // Update local state
       setCart(updatedCart);
 
+      // Update lastAddedItems if necessary
       setLastAddedItems((prevItems) =>
         prevItems.map((item) =>
-          item.skuCode === skuCode ? { ...item, quantity: newQuantity } : item
+          item.skuCode === skuCode
+            ? {
+                ...item,
+                quantity: newQuantity,
+                remains: remainingStock,
+              }
+            : item
         )
       );
     } catch (error) {
@@ -167,6 +227,8 @@ export function CartProvider({ children }) {
         lastAddedItem,
         closeNotification,
         cartId,
+        stock, // Add stock here
+        updateStock, // Add updateStock here
       }}
     >
       {children}
@@ -259,7 +321,8 @@ export function CartPage() {
                             updateQuantity(
                               item.id,
                               item.skuCode,
-                              item.quantity - 1
+                              item.quantity - 1,
+                              item.productPermalink
                             )
                           }
                         >
@@ -277,7 +340,8 @@ export function CartPage() {
                             updateQuantity(
                               item.id,
                               item.skuCode,
-                              item.quantity + 1
+                              item.quantity + 1,
+                              item.productPermalink
                             )
                           }
                         >

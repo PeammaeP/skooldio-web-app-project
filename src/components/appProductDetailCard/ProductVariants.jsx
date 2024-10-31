@@ -12,7 +12,13 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
   const [hasSize, setHasSize] = useState(null);
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [showCartNotification, setShowCartNotification] = useState(false);
-  const { addToCart } = useCart();
+
+  const { stock, addToCart, updateStock } = useCart();
+
+  console.log("Current stock context:", stock); // Add this line
+
+  // Also verify the context is being exported correctly from CartProvider
+  console.log("CartProvider stock:", stock); // Add this in CartProvider
 
   const handleColorSelect = (color) => {
     setSelectedColor(color);
@@ -27,24 +33,27 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
     setSelectedQuantity(quantity);
   };
 
+  console.log("Stock", stock);
+
   // restructure the variants of the API
   const groupedVariants = useMemo(() => {
     return variants.reduce((acc, variant) => {
+      const adjustedRemains = stock[variant.skuCode] ?? variant.remains;
       if (!acc[variant.color]) {
         acc[variant.color] = { colorCode: variant.colorCode, sizes: {} };
       }
       if (!variant.size) {
         acc[variant.color].skuCode = variant.skuCode;
-        acc[variant.color].remains = variant.remains;
+        acc[variant.color].remains = adjustedRemains;
       } else {
         acc[variant.color].sizes[variant.size] = {
           skuCode: variant.skuCode,
-          remains: variant.remains,
+          remains: adjustedRemains,
         };
       }
       return acc;
     }, {});
-  }, [variants]);
+  }, [variants, stock]);
 
   // Set `hasSize` based on whether any variant includes sizes
   useEffect(() => {
@@ -83,11 +92,15 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
             size: hasSize ? selectedSize : null,
           },
         ]);
+        const remainingStock =
+          (selectedVariant.remains || stock[selectedVariant.skuCode]) -
+          selectedQuantity;
+        updateStock(selectedVariant.skuCode, remainingStock); // Immediately update stock
+
+        setShowCartNotification(true);
       } catch (error) {
         console.error("Failed to add item to cart:", error);
-        // Handle error (e.g., show error message to user)
       }
-      setShowCartNotification(true);
     }
   };
 
@@ -111,6 +124,7 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
               onClick={() => handleColorSelect(color)}
               aria-label={color}
               aria-checked={selectedColor === color}
+              // disabled={stock === 0}
             >
               <div className="w-full h-full grid grid-cols-6 grid-rows-6">
                 {[...Array(36)].map((_, index) => (
@@ -175,25 +189,38 @@ const ProductVariants = ({ variants, name, imageUrls, price }) => {
             }
             onChange={handleQuantityChange} // Pass the callback
           />
+          <button
+            className={`flex flex-col justify-center items-center mt-4 h-[54px] w-full ${
+              !selectedColor ||
+              (!selectedSize && hasSize) ||
+              (hasSize
+                ? !groupedVariants[selectedColor].sizes[selectedSize]?.remains
+                : !groupedVariants[selectedColor].remains)
+                ? "bg-gray-400 cursor-not-allowed text-gray-700" // Disabled style
+                : "bg-[#222222] text-white hover:bg-[#222333]" // Enabled style
+            }`}
+            onClick={handleAddToCart}
+            disabled={
+              !selectedColor ||
+              (!selectedSize && hasSize) ||
+              (hasSize
+                ? !groupedVariants[selectedColor].sizes[selectedSize]?.remains
+                : !groupedVariants[selectedColor].remains)
+            }
+          >
+            Add to Cart
+          </button>
+          {showCartNotification && (
+            <CartNotificationCard
+              isOpen={showCartNotification}
+              onClose={() => setShowCartNotification()}
+              name={name}
+              imageUrls={imageUrls}
+              quantity={selectedQuantity}
+              price={price}
+            />
+          )}
         </div>
-      )}
-      <button
-        className="flex flex-col justify-center items-center mt-4 bg-[#222222] text-white h-[54px] w-full hover:bg-[#222333]"
-        onClick={handleAddToCart}
-        disabled={!selectedColor || (!selectedSize && hasSize)}
-      >
-        Add to Cart
-      </button>
-      {showCartNotification && (
-        <CartNotificationCard
-          isOpen={showCartNotification}
-          onClose={() => setShowCartNotification()}
-          name={name}
-          imageUrls={imageUrls}
-          quantity={selectedQuantity}
-          // skuCode={productSkuCode}
-          price={price}
-        />
       )}
     </div>
   );

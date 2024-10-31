@@ -60,7 +60,7 @@ const ProductCardIntersection = ({ collection, currentProductId }) => {
 
 ProductCardIntersection.propTypes = {
   collection: PropTypes.string.isRequired,
-  currentProductId: PropTypes.string.isRequired,
+  currentProductId: PropTypes.string,
 };
 
 export default ProductCardIntersection;
