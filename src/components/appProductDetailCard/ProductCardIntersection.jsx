@@ -34,7 +34,7 @@ const ProductCardIntersection = ({ collection, currentProductId }) => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mt-16">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-16">
       {filterValueCollection(productDisplay, collection, currentProductId).map(
         (product) => (
           <Link
