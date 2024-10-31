@@ -147,6 +147,7 @@ const ProductDetailCard = ({
             imageUrls={imageUrls}
             collection={categories[0]}
             currentProductId={id}
+            permalink={permalink}
             price={priceProductState}
           />
         </div>
@@ -187,7 +188,6 @@ ProductDetailCard.propTypes = {
       colorCode: PropTypes.string.isRequired,
     })
   ).isRequired,
-  
 };
 
 export default ProductDetailCard;
